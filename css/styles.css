@@ -1,10 +1,10 @@
 /* --- TMTL minimal dark theme --- */
 :root{
-  --bg:#000;            /* page background */
-  --fg:#f3f3f3;         /* foreground text */
-  --muted:#a8a8a8;      /* secondary text */
-  --line:#1a1a1a;       /* hairline rules */
-  --card:#0b0b0b;       /* card background */
+  --bg:#000;
+  --fg:#f3f3f3;
+  --muted:#a8a8a8;
+  --line:#1a1a1a;
+  --card:#0b0b0b;
   --radius:14px;
 }
 *{box-sizing:border-box}
@@ -17,22 +17,41 @@ body{
 a{color:var(--fg); opacity:.92; text-decoration:none}
 a:hover,a:focus{opacity:1; text-decoration:underline}
 .wrap{max-width:960px; margin:0 auto; padding:24px}
+
 header{
   border-bottom:1px solid var(--line);
   position:sticky; top:0; background:rgba(0,0,0,.65); backdrop-filter:saturate(120%) blur(6px);
 }
 .header-inner{display:flex; align-items:center; justify-content:space-between}
-.brand{font-weight:700; letter-spacing:.5px}
+.brand{font-weight:700; letter-spacing:.4px; white-space:nowrap}
 nav{display:flex; gap:18px}
 main{padding:24px 0}
 .center{text-align:center}
+
 h1{font-size:2.6rem; line-height:1.15; margin:.2em 0 .3em}
 h2{font-size:1rem; margin:1.4em 0 .8em; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.12em}
 h3{margin:.2em 0 .4em}
 .lede{color:var(--muted); max-width:62ch; margin:0 auto 10px auto}
 .logo{width:140px; height:auto; display:block; margin:24px auto 8px auto}
+.logo--big{width:240px; margin-top:22px}
 
-/* subtle hero animation */
+/* subtle hero "ocean ripple" */
+.hero{position:relative; overflow:hidden; padding:44px 0 6px}
+.hero::before{
+  content:""; position:absolute; inset:-25vmax; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60vmax 60vmax at 50% 40%, rgba(255,255,255,.04), transparent 60%),
+    radial-gradient(50vmax 50vmax at 30% 60%, rgba(255,255,255,.025), transparent 60%),
+    radial-gradient(40vmax 40vmax at 70% 70%, rgba(255,255,255,.03), transparent 60%);
+  filter: blur(30px);
+  animation: drift 24s linear infinite alternate;
+}
+@keyframes drift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  100%{transform:translate3d(2%, -1%, 0) scale(1.02)}
+}
+
+/* animated entrance */
 @keyframes rise { from { opacity:0; transform: translateY(6px) scale(.985);} to{opacity:1; transform:none;} }
 .logo, h1, .lede { animation: rise .75s ease-out both; }
 h1 { animation-delay: .06s } .lede { animation-delay: .12s }
@@ -42,13 +61,7 @@ h1 { animation-delay: .06s } .lede { animation-delay: .12s }
 .card{border:1px solid var(--line); background:var(--card); border-radius:var(--radius); padding:18px}
 .card p:last-child{margin-bottom:0}
 
-.btn{
-  display:inline-block; border:1px solid var(--line); padding:10px 14px; border-radius:999px;
-  text-decoration:none; transition:transform .06s ease, border-color .15s ease;
-}
-.btn:hover{border-color:#2a2a2a; transform:translateY(-1px)}
-
-/* clickable cards */
+/* clickable cards (Projects page) */
 a.link-card{display:block; border:1px solid var(--line); background:var(--card); border-radius:var(--radius); padding:18px; text-decoration:none}
 a.link-card:hover{border-color:#2a2a2a; transform:translateY(-2px)}
 a.link-card h3{margin-top:0}
@@ -59,6 +72,14 @@ a.link-card .more::after{content:"↗"; opacity:.7}
 .thumb{width:100%; aspect-ratio:16/9; border:1px solid var(--line); border-radius:10px; background:#0a0a0a; margin-bottom:10px; overflow:hidden}
 .thumb img{width:100%; height:100%; object-fit:cover; display:block}
 
+/* minimalist home badges */
+.badges{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-top:12px}
+.badge{display:flex; flex-direction:column; align-items:center; gap:10px; border:1px solid var(--line); border-radius:var(--radius); padding:14px; background:var(--card); text-decoration:none}
+.badge:hover{border-color:#2a2a2a; transform:translateY(-2px)}
+.badge img{width:84px; height:84px; border-radius:12px; object-fit:cover; border:1px solid var(--line); background:#000}
+.badge span{opacity:.95}
+
+/* quotes + figures */
 .quote{margin:22px auto 0 auto; max-width:60ch; color:var(--muted); font-style:italic}
 .caption{color:var(--muted); font-size:.9rem; margin-top:8px; text-align:center}
 figure{margin:0}
@@ -67,7 +88,18 @@ hr.sep{border:0; border-top:1px solid var(--line); margin:36px 0}
 footer{border-top:1px solid var(--line); margin-top:40px}
 small{color:var(--muted)}
 
-/* contact form */
+/* details/summary for the welcome text */
+details.welcome{max-width:66ch; margin:10px auto 0; color:var(--muted)}
+details.welcome[open]{color:var(--fg)}
+details.welcome summary{cursor:pointer; list-style:none}
+details.welcome summary::-webkit-details-marker{display:none}
+
+/* buttons & form */
+.btn{
+  display:inline-block; border:1px solid var(--line); padding:10px 14px; border-radius:999px;
+  text-decoration:none; transition:transform .06s ease, border-color .15s ease;
+}
+.btn:hover{border-color:#2a2a2a; transform:translateY(-1px)}
 form{display:grid; gap:12px; max-width:520px}
 input,textarea{
   width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line);
