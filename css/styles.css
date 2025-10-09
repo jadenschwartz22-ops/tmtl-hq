@@ -1,6 +1,11 @@
 /* --- TMTL minimal dark theme --- */
 :root{
-  --bg:#000; --fg:#fff; --muted:#b7b7b7; --line:#1a1a1a; --card:#0b0b0b;
+  --bg:#000;            /* page background */
+  --fg:#f3f3f3;         /* foreground text */
+  --muted:#a8a8a8;      /* secondary text */
+  --line:#1a1a1a;       /* hairline rules */
+  --card:#0b0b0b;       /* card background */
+  --radius:14px;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -9,38 +14,56 @@ body{
   font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
-a{color:var(--fg); opacity:.9; text-decoration:none}
+a{color:var(--fg); opacity:.92; text-decoration:none}
 a:hover,a:focus{opacity:1; text-decoration:underline}
+.muted{color:var(--muted)}
 .wrap{max-width:960px; margin:0 auto; padding:24px}
-header{border-bottom:1px solid var(--line); background:rgba(0,0,0,.6); position:sticky; top:0; backdrop-filter:saturate(120%) blur(6px)}
+header{
+  border-bottom:1px solid var(--line);
+  position:sticky; top:0; background:rgba(0,0,0,.65); backdrop-filter:saturate(120%) blur(6px);
+}
+.header-inner{display:flex; align-items:center; justify-content:space-between}
 .brand{font-weight:700; letter-spacing:.5px}
 nav{display:flex; gap:18px}
-.header-inner{display:flex; align-items:center; justify-content:space-between}
 main{padding:24px 0}
-h1{font-size:2.4rem; margin:.2em 0 .2em}
-h2{font-size:1.4rem; margin:1.4em 0 .6em; color:var(--muted); font-weight:600}
-.lede{color:var(--muted); max-width:60ch}
 .center{text-align:center}
-.logo{width:140px; height:auto; display:block; margin:24px auto}
+h1{font-size:2.4rem; line-height:1.15; margin:.2em 0 .3em}
+h2{font-size:1.2rem; margin:1.4em 0 .6em; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.08em}
+h3{margin:.2em 0 .4em}
+.lede{color:var(--muted); max-width:62ch; margin:0 auto 10px auto}
+.logo{width:140px; height:auto; display:block; margin:24px auto 8px auto}
 .grid{display:grid; gap:18px}
 .grid.cards{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.card{border:1px solid var(--line); background:var(--card); border-radius:14px; padding:18px}
-.card h3{margin:.2em 0 .4em}
-.btn{display:inline-block; border:1px solid var(--line); padding:10px 14px; border-radius:999px}
-.btn:hover{border-color:#2a2a2a}
-figure{margin:0; text-align:center}
-figure img{max-width:100%; height:auto; border-radius:12px; border:1px solid var(--line); background:#000}
-.caption{color:var(--muted); font-size:.9rem; margin-top:8px}
+.card{
+  border:1px solid var(--line); background:var(--card);
+  border-radius:var(--radius); padding:18px
+}
+.card p:last-child{margin-bottom:0}
+.btn{
+  display:inline-block; border:1px solid var(--line); padding:10px 14px; border-radius:999px;
+  text-decoration:none; transition:transform .06s ease, border-color .15s ease;
+}
+.btn:hover{border-color:#2a2a2a; transform:translateY(-1px)}
+.quote{margin:22px auto 0 auto; max-width:60ch; color:var(--muted); font-style:italic}
+.caption{color:var(--muted); font-size:.9rem; margin-top:8px; text-align:center}
+figure{margin:0}
+figure img{
+  width:100%; height:auto; border-radius:12px; display:block;
+  border:1px solid var(--line); background:#000;
+}
+hr.sep{border:0; border-top:1px solid var(--line); margin:36px 0}
 footer{border-top:1px solid var(--line); margin-top:40px}
 small{color:var(--muted)}
+
 /* contact form */
 form{display:grid; gap:12px; max-width:520px}
 input,textarea{
   width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line);
   background:#0a0a0a; color:var(--fg)
 }
+input::placeholder, textarea::placeholder{color:#7a7a7a}
 textarea{min-height:140px; resize:vertical}
 button[type=submit]{cursor:pointer}
-.success,.error{display:none; margin-top:8px; font-size:.95rem}
-.success{color:#98ffa6} .error{color:#ff9b9b}
-hr.sep{border:0; border-top:1px solid var(--line); margin:36px 0}
+.success,.error{display:none; font-size:.95rem}
+.success{color:#a6ffb5}
+.error{color:#ff9b9b}
