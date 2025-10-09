@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
-  <title>Teach Me to Live — Tools for medicine & learning</title>
-  <meta name="description" content="Intentional, minimalist software for medicine and learning. Minimal noise, maximal signal." />
+  <title>Teach Me to Live — Tools for Learning</title>
+  <meta name="description" content="Intentional, minimalist software for learning. Minimal noise, maximal signal." />
   <link rel="canonical" href="https://teachmetolive.com/" />
   <link rel="stylesheet" href="css/styles.css" />
   <meta name="theme-color" content="#000000" />
@@ -25,39 +25,76 @@
   <main class="wrap center">
     <section class="hero">
       <img class="logo logo--big" src="assets/logo.png" alt="Teach Me to Live emblem" />
-      <h1>Tools for medicine &amp; learning.</h1>
-      <!-- Minimal top; optional long welcome tucked away -->
-      <details class="welcome">
-        <summary>Read the welcome</summary>
-        <p>Thus, TMTL is an homage to the deeply rich experience of life: from transcendent experience to dark despair, it is the ephemeral experience of being, the whole repertoire of the soul. Every month, wisdom blooms and then fades, reminding us that life’s most profound moments are as fleeting as they are precious. The app is completely free, and always will remain so. Welcome.</p>
-      </details>
+      <h1>Tools for Learning</h1>
     </section>
 
-    <section aria-labelledby="projects-mini">
-      <h2 id="projects-mini">Projects</h2>
-      <div class="badges">
-        <a class="badge" href="https://protoquiz.com" target="_blank" rel="noopener">
-          <img src="assets/protoquiz.jpg" alt="" onerror="this.style.display='none'">
-          <span>EMS ProtoQuiz</span>
-        </a>
-        <a class="badge" href="https://apps.apple.com/us/app/teach-me-to-live/id6745646371" target="_blank" rel="noopener">
-          <img src="assets/tmtl-app.jpg" alt="" onerror="this.style.display='none'">
-          <span>Teach Me To Live</span>
-        </a>
-        <a class="badge" href="https://sleepmedic.co" target="_blank" rel="noopener">
-          <img src="assets/sleepmedic.jpg" alt="" onerror="this.style.display='none'">
-          <span>SleepMedic</span>
-        </a>
+    <!-- Rotating quote -->
+    <section class="quote-wrap" aria-live="polite">
+      <div id="q" class="fade">
+        <div id="qtext" class="quote-lg">“The unexamined life is not worth living.”</div>
+        <div id="qattr" class="quote-attr">— Socrates</div>
       </div>
+      <div class="quote-progress"><div id="qbar" class="progress-bar"></div></div>
     </section>
 
     <hr class="sep" />
-    <blockquote class="quote">“The unexamined life is not worth living.” <span class="muted">— Socrates</span></blockquote>
   </main>
 
   <footer class="wrap">
     <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
   </footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Quotes: first = Socrates (fixed start), others shuffled each load
+    const first = { text: "“The unexamined life is not worth living.”", attr: "— Socrates" };
+
+    const others = [
+      { text: "“Never was an age more sentimental, more devoid of real feeling, more exaggerated in false feeling, than our own.”", attr: "— D. H. Lawrence" },
+      { text: "“There is no tomorrow.”", attr: "— <em>Rocky III</em>" },
+      { text: "“Pause, you who read this, and think for a moment of the long chain of iron or gold, of thorns or flowers, that would never have bound you, but for the formation of the first link on one memorable day.”", attr: "— Charles Dickens, <em>Great Expectations</em>" },
+      { text: "“Forever is composed of nows.”", attr: "— Emily Dickinson" },
+      { text: "“I dwell in Possibility.”", attr: "— Emily Dickinson" },
+      { text: "“And so the ordinary demanded unblinking attention. Any tedious hour might be the last of its kind.”", attr: "— Marilynne Robinson, <em>Housekeeping</em>" },
+      { text: "“Though free to think and act, we are held together like stars in the firmament with ties inseparable. These ties cannot be seen, but we can feel them. We are all one.”", attr: "— Nikola Tesla" },
+      { text: "“If your mouth is open, you're not learning.”", attr: "— Gautama Buddha" },
+      { text: "“One extends one's limits only by exceeding them.”", attr: "— M. Scott Peck" },
+      { text: "“Until you value yourself, you won't value your time. Until you value your time, you will not do anything with it.”", attr: "— M. Scott Peck" },
+      { text: "“We have two lives, and the second begins when we realize we only have one.”", attr: "— Confucius" },
+      { text: "“A man never discloses his own character so clearly as when he describes another's.”", attr: "— Jean Paul Richter" },
+      { text: "“Where to, Miss?” “To the stars.”", attr: "— <em>Titanic</em>" },
+      { text: "“In Pittsburgh, in 1966, twenty-four Black men from the Hill answered a call for help and in the process changed the world. They were sons and fathers, bookbinders, mechanics, orderlies. They were paramedics, and they came from Freedom House… They did something truly remarkable, and their story goes something like this.”", attr: "— Kevin Hazzard, <em>American Sirens</em>" },
+      { text: "“Who knows what you might learn from taking a chance on conversation with a stranger? Everyone carries a piece of the puzzle. Nobody comes into your life by mere coincidence. Trust your instincts. Do the unexpected. Find the others…”", attr: "— Timothy Leary" },
+      { text: "“In other words, self-actualization is possible only as a side-effect of self-transcendence.”", attr: "— Viktor E. Frankl, <em>Man’s Search for Meaning</em>" },
+      { text: "“We live together, we act on and react to one another; but always, and in all circumstances, we are by ourselves… From family to nation every human group is a society of island universes.”", attr: "— Aldous Huxley, <em>The Doors of Perception</em>" },
+      { text: "“Was I a little full of myself at nineteen? Sure I was. I think you have to be to do anything important.”", attr: "— Michael Dell" },
+      { text: "“Many people don’t reach their greatest potential because they fear failure. In avoiding failure, they deprive themselves of a great teacher.”", attr: "— Michael Dell" },
+      { text: "“If you would persuade, appeal to interest and not to reason.”", attr: "— Benjamin Franklin, <em>Poor Richard’s Almanack</em> (via Charlie Munger)" }
+    ];
+
+    // Fisher–Yates shuffle
+    for (let i = others.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [others[i], others[j]] = [others[j], others[i]];
+    }
+    const sequence = [first, ...others];
+
+    const qtext = document.getElementById('qtext');
+    const qattr = document.getElementById('qattr');
+    const q = document.getElementById('q');
+    const bar = document.getElementById('qbar');
+
+    let idx = 0;
+    function show(i){
+      const {text, attr} = sequence[i % sequence.length];
+      q.classList.remove('fade'); void q.offsetWidth; q.classList.add('fade'); // restart fade
+      qtext.innerHTML = text;
+      qattr.innerHTML = attr;
+      bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = 'fill 10s linear forwards'; // restart progress
+    }
+    show(0);
+    setInterval(() => { idx = (idx + 1) % sequence.length; show(idx); }, 10000);
+  </script>
 </body>
 </html>
