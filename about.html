@@ -1,1 +1,59 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>About — TMTL</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">TMTL</a>
+      <nav>
+        <a href="projects.html">Projects</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>About TMTL</h1>
+    <p class="lede">We build small, careful software for people who care about practice, attention, and craft.</p>
+
+    <div class="grid cards">
+      <article class="card">
+        <figure>
+          <img src="assets/plato.jpg" alt="Marble statue of a philosopher" />
+          <figcaption class="caption">Philosophy</figcaption>
+        </figure>
+        <p>We’re guided by old ideas: clarity, virtue, and the examined life. The goal is not clicks—it’s understanding.</p>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="assets/logo.png" alt="TMTL logo" />
+          <figcaption class="caption">Practice</figcaption>
+        </figure>
+        <p>Tools should disappear into the work. Minimal interfaces, quick feedback, and zero fluff.</p>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="assets/sisyphus.jpg" alt="Silhouette pushing a boulder at sunset" />
+          <figcaption class="caption">Mission</figcaption>
+        </figure>
+        <p>Use technology to reduce noise, strengthen connection, and improve the wellbeing of those who serve others.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="wrap">
+    <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
+  </footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+</body>
+</html>
