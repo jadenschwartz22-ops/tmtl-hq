@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
-  <title>TMTL — Tools for medicine & learning</title>
+  <title>Teach Me to Live — Tools for medicine & learning</title>
   <meta name="description" content="Intentional, minimalist software for medicine and learning. Minimal noise, maximal signal." />
   <link rel="canonical" href="https://teachmetolive.com/" />
   <link rel="stylesheet" href="css/styles.css" />
@@ -13,7 +13,7 @@
 <body>
   <header>
     <div class="wrap header-inner">
-      <a class="brand" href="index.html" aria-label="TMTL home">TMTL</a>
+      <a class="brand" href="index.html" aria-label="Teach Me to Live — home">Teach Me to Live</a>
       <nav>
         <a href="about.html">About</a>
         <a href="projects.html">Projects</a>
@@ -23,32 +23,30 @@
   </header>
 
   <main class="wrap center">
-    <img class="logo" src="assets/logo.png" alt="TMTL logo" />
-    <h1>Tools for medicine &amp; learning.</h1>
-    <p class="lede">Teach Me to Live is building intentional software for a disconnected world full of distractions. The goal is to use technology for good—to actually bring people together, when so much of it pulls us apart.</p>
+    <section class="hero">
+      <img class="logo logo--big" src="assets/logo.png" alt="Teach Me to Live emblem" />
+      <h1>Tools for medicine &amp; learning.</h1>
+      <!-- Minimal top; optional long welcome tucked away -->
+      <details class="welcome">
+        <summary>Read the welcome</summary>
+        <p>Thus, TMTL is an homage to the deeply rich experience of life: from transcendent experience to dark despair, it is the ephemeral experience of being, the whole repertoire of the soul. Every month, wisdom blooms and then fades, reminding us that life’s most profound moments are as fleeting as they are precious. The app is completely free, and always will remain so. Welcome.</p>
+      </details>
+    </section>
 
-    <section>
-      <h2>Featured projects</h2>
-      <div class="grid cards">
-        <a class="link-card" href="https://protoquiz.com" target="_blank" rel="noopener">
-          <div class="thumb"><img src="assets/protoquiz.jpg" alt="" onerror="this.style.display='none'"></div>
-          <h3>EMS ProtoQuiz</h3>
-          <p>Protocol drills and scenario checks for EMS—deliberate practice that sticks.</p>
-          <span class="more">protoquiz.com</span>
+    <section aria-labelledby="projects-mini">
+      <h2 id="projects-mini">Projects</h2>
+      <div class="badges">
+        <a class="badge" href="https://protoquiz.com" target="_blank" rel="noopener">
+          <img src="assets/protoquiz.jpg" alt="" onerror="this.style.display='none'">
+          <span>EMS ProtoQuiz</span>
         </a>
-
-        <a class="link-card" href="https://apps.apple.com/us/app/teach-me-to-live/id6745646371" target="_blank" rel="noopener">
-          <div class="thumb"><img src="assets/tmtl-app.jpg" alt="" onerror="this.style.display='none'"></div>
-          <h3>Teach Me To Live</h3>
-          <p>Share wisdom that fades—24-hour, ephemeral reflections.</p>
-          <span class="more">App Store</span>
+        <a class="badge" href="https://apps.apple.com/us/app/teach-me-to-live/id6745646371" target="_blank" rel="noopener">
+          <img src="assets/tmtl-app.jpg" alt="" onerror="this.style.display='none'">
+          <span>Teach Me To Live</span>
         </a>
-
-        <a class="link-card" href="https://sleepmedic.co" target="_blank" rel="noopener">
-          <div class="thumb"><img src="assets/sleepmedic.jpg" alt="" onerror="this.style.display='none'"></div>
-          <h3>SleepMedic</h3>
-          <p>Science-backed sleep tools for real life and shift work.</p>
-          <span class="more">sleepmedic.co</span>
+        <a class="badge" href="https://sleepmedic.co" target="_blank" rel="noopener">
+          <img src="assets/sleepmedic.jpg" alt="" onerror="this.style.display='none'">
+          <span>SleepMedic</span>
         </a>
       </div>
     </section>
