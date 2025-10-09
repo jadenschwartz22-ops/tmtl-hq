@@ -1,1 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Projects — TMTL</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">TMTL</a>
+      <nav>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
 
+  <main class="wrap">
+    <h1>Projects</h1>
+    <p class="lede">A small collection of focused tools.</p>
+
+    <div class="grid cards">
+      <article class="card">
+        <h3>EMS ProtoQuiz</h3>
+        <p>Fast, high-yield protocol quizzes for EMS.</p>
+        <p><a class="btn" href="https://protoquiz.com" target="_blank" rel="noopener">Visit protoquiz.com</a></p>
+      </article>
+
+      <article id="tmtl-app" class="card">
+        <h3>Teach Me To Live (iOS)</h3>
+        <p>Share and read wisdom that disappears after 24 hours.</p>
+        <p>
+          <!-- Replace APP_STORE_URL with your real App Store link -->
+          <a class="btn" href="APP_STORE_URL" target="_blank" rel="noopener">App Store</a>
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>SleepMedic</h3>
+        <p>Research-backed sleep education with practical playbooks.</p>
+        <p><a class="btn" href="https://sleepmedic.co" target="_blank" rel="noopener">sleepmedic.co</a></p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="wrap">
+    <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
+  </footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+</body>
+</html>
