@@ -35,10 +35,6 @@
         <div id="qattr" class="quote-attr">— Socrates</div>
       </div>
       <div class="quote-progress"><div id="qbar" class="progress-bar"></div></div>
-      <div class="quote-controls">
-        <button class="nav-btn" id="prev" aria-label="Previous quote">‹</button>
-        <button class="nav-btn" id="next" aria-label="Next quote">›</button>
-      </div>
     </section>
 
     <hr class="sep" />
@@ -51,7 +47,7 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Fixed first and second (Tesla), rest shuffled.
+    // Fixed first and second (Tesla), rest shuffled. Long "Gates of Fire" quote removed.
     const first = { text: "“The unexamined life is not worth living.”", attr: "— Socrates" };
     const second = { text: "“Though free to think and act, we are held together like stars in the firmament with ties inseparable. These ties cannot be seen, but we can feel them. We are all one.”", attr: "— Nikola Tesla" };
 
@@ -69,7 +65,6 @@
       { text: "“A man never discloses his own character so clearly as when he describes another's.”", attr: "— Jean Paul Richter" },
       { text: "“Where to, Miss?” “To the stars.”", attr: "— <em>Titanic</em>" },
       { text: "“In Pittsburgh, in 1966, twenty-four Black men from the Hill answered a call for help and in the process changed the world. They were sons and fathers, bookbinders, mechanics, orderlies. They were paramedics, and they came from Freedom House… They did something truly remarkable, and their story goes something like this.”", attr: "— Kevin Hazzard, <em>American Sirens</em>" },
-      { text: "“I will tell his majesty what a king is. A king does not abide within his tent while his men bleed and die upon the field. A king does not dine while his men go hungry, nor sleep when they stand at watch upon the wall. A king does not command his men’s loyalty through fear nor purchase it with gold; he earns their love by the sweat of his own back and the pains he endures for their sake. That which comprises the harshest burden, a king lifts first and sets down last. A king does not require service of those he leads but provides it to them. He serves them, not they him.”", attr: "— Xeones, <em>Gates of Fire</em>" },
       { text: "“Who knows what you might learn from taking a chance on conversation with a stranger? Everyone carries a piece of the puzzle. Nobody comes into your life by mere coincidence. Trust your instincts. Do the unexpected. Find the others…”", attr: "— Timothy Leary" },
       { text: "“In other words, self-actualization is possible only as a side-effect of self-transcendence.”", attr: "— Viktor E. Frankl, <em>Man’s Search for Meaning</em>" },
       { text: "“We live together, we act on and react to one another; but always, and in all circumstances, we are by ourselves… From family to nation every human group is a society of island universes.”", attr: "— Aldous Huxley, <em>The Doors of Perception</em>" },
@@ -86,17 +81,14 @@
     const sequence = [first, second, ...pool];
 
     const qw = document.getElementById('qw');
-    const q = document.getElementById('q');
     const qtext = document.getElementById('qtext');
     const qattr = document.getElementById('qattr');
     const bar = document.getElementById('qbar');
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
 
     let idx = 0, timer = null;
 
     function restartBar(){
-      bar.style.animation = 'none'; void bar.offsetWidth; // reflow
+      bar.style.animation = 'none'; void bar.offsetWidth;
       bar.style.animation = 'fill 10s linear forwards';
     }
 
@@ -109,7 +101,7 @@
         qattr.innerHTML = attr;
         qw.classList.remove('is-fading');
         restartBar();
-      }, 300); // fade-out duration match CSS (600ms total; change at mid)
+      }, 325); // mid-fade swap
     }
 
     function auto(){
@@ -118,16 +110,7 @@
       restartBar();
     }
 
-    prevBtn.addEventListener('click', () => { setQuote(idx - 1); auto(); });
-    nextBtn.addEventListener('click', () => { setQuote(idx + 1); auto(); });
-
-    // Keyboard arrows
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === 'ArrowLeft'){ prevBtn.click(); }
-      if(e.key === 'ArrowRight'){ nextBtn.click(); }
-    });
-
-    // init (start at Socrates, then Tesla next)
+    // init
     setQuote(0);
     auto();
   </script>
