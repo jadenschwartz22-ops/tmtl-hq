@@ -43,7 +43,13 @@ h2{
   font-weight:600; text-transform:uppercase; letter-spacing:.12em;
 }
 h3{margin:.2em 0 .4em}
-.lede{color:var(--muted); max-width:62ch; margin:0 auto 10px}
+.lede{
+  color: var(--muted);
+  max-width: 62ch;
+  margin: 0 auto 10px;
+  text-align: center;   /* ← add this */
+}
+
 
 /* Logos */
 .logo{width:140px; height:auto; display:block; margin:24px auto 8px}
