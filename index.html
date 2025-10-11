@@ -47,13 +47,16 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Fixed first, second, and (per request) third quote.
-    const first  = { text: "“The unexamined life is not worth living.”", attr: "— Socrates", author: "Socrates" };
-    const second = { text: "“Though free to think and act, we are held together like stars in the firmament with ties inseparable. These ties cannot be seen, but we can feel them. We are all one.”", attr: "— Nikola Tesla", author: "Nikola Tesla" };
-    const third  = { text: "“Never was an age more sentimental, more devoid of real feeling, more exaggerated in false feeling, than our own.”", attr: "— D. H. Lawrence", author: "D. H. Lawrence" };
+    // Only the first quote is fixed; all others are randomized.
+    const first = { text: "“The unexamined life is not worth living.”", attr: "— Socrates", author: "Socrates" };
 
-    // Base pool (minus D. H. Lawrence which is set as 'third')
-    const basePool = [
+    // Full pool of remaining quotes (no duplicates; titles italicized where appropriate)
+    const poolRaw = [
+      // Previously "second" and "third" are now part of the random pool:
+      { text: "“Though free to think and act, we are held together like stars in the firmament with ties inseparable. These ties cannot be seen, but we can feel them. We are all one.”", attr: "— Nikola Tesla", author: "Nikola Tesla" },
+      { text: "“Never was an age more sentimental, more devoid of real feeling, more exaggerated in false feeling, than our own.”", attr: "— D. H. Lawrence", author: "D. H. Lawrence" },
+
+      // Original base pool
       { text: "“There is no tomorrow.”", attr: "— <em>Rocky III</em>", author: "Rocky III" },
       { text: "“Pause, you who read this, and think for a moment of the long chain of iron or gold, of thorns or flowers, that would never have bound you, but for the formation of the first link on one memorable day.”", attr: "— Charles Dickens, <em>Great Expectations</em>", author: "Charles Dickens" },
       { text: "“Forever is composed of nows.”", attr: "— Emily Dickinson", author: "Emily Dickinson" },
@@ -71,16 +74,13 @@
       { text: "“We live together, we act on and react to one another; but always, and in all circumstances, we are by ourselves… From family to nation every human group is a society of island universes.”", attr: "— Aldous Huxley, <em>The Doors of Perception</em>", author: "Aldous Huxley" },
       { text: "“Was I a little full of myself at nineteen? Sure I was. I think you have to be to do anything important.”", attr: "— Michael Dell", author: "Michael Dell" },
       { text: "“Many people don’t reach their greatest potential because they fear failure. In avoiding failure, they deprive themselves of a great teacher.”", attr: "— Michael Dell", author: "Michael Dell" },
-      { text: "“If you would persuade, appeal to interest and not to reason.”", attr: "— Benjamin Franklin, <em>Poor Richard’s Almanack</em> (via Charlie Munger)", author: "Benjamin Franklin" }
-    ];
+      { text: "“If you would persuade, appeal to interest and not to reason.”", attr: "— Benjamin Franklin, <em>Poor Richard’s Almanack</em> (via Charlie Munger)", author: "Benjamin Franklin" },
 
-    // New quotes requested (no duplicates; titles italicized where appropriate)
-    const requestedAdds = [
+      // Requested additions
       { text: "“Who knows where madness lies? Perhaps to be too practical is madness. To surrender dreams—this may be madness. Too much sanity may be madness—and maddest of all: to see life as it is, and not as it should be!”", attr: "— Miguel de Cervantes, <em>Don Quixote</em>", author: "Miguel de Cervantes" },
       { text: "“Paths are made by walking.”", attr: "— Franz Kafka", author: "Franz Kafka" },
       { text: "“What lay beyond the shadows of the yard was an endless view of the world that you wouldn’t be able to see till dawn.”", attr: "— Jack Kerouac, <em>On the Road</em>", author: "Jack Kerouac" },
       { text: "“What a stupendous, what an incomprehensible machine is man! Who can endure toil, famine, stripes, imprisonment & death itself in vindication of his own liberty, and the next moment… inflict on his fellow men a bondage, one hour of which is fraught with more misery than ages of that which he rose in rebellion to oppose.”", attr: "— Thomas Jefferson", author: "Thomas Jefferson" },
-      // “Forever is composed of nows.” already present — not duplicated.
       { text: "“We live as we dream—alone.”", attr: "— Joseph Conrad, <em>Heart of Darkness</em>", author: "Joseph Conrad" },
       { text: "“Every sorrow suggests a thousand songs, and every song calls a thousand sorrows; and so they are infinite in number, and all the same.”", attr: "— Marilynne Robinson, <em>Housekeeping</em>", author: "Marilynne Robinson" },
       { text: "“I give you the mausoleum of all hope and desire… I give it to you not that you may remember time, but that you might forget it now and then for a moment and not spend all of your breath trying to conquer it. Because no battle is ever won, he said. They are not even fought. The field only reveals to man his own folly and despair, and victory is an illusion of philosophers and fools.”", attr: "— William Faulkner, <em>The Sound and the Fury</em>", author: "William Faulkner" },
@@ -89,14 +89,13 @@
       { text: "“I will tell his majesty what a king is. A king does not abide within his tent while his men bleed and die upon the field. A king does not dine while his men go hungry, nor sleep when they stand at watch upon the wall. A king does not command his men’s loyalty through fear nor purchase it with gold; he earns their love by the sweat of his own back and the pains he endures for their sake. That which comprises the harshest burden, a king lifts first and sets down last. A king does not require service of those he leads but provides it to them. He serves them, not they him.”", attr: "— Steven Pressfield, <em>Gates of Fire</em> (Xeones)", author: "Steven Pressfield" },
       { text: "“I focus on the little things. The little things add up to big things.”", attr: "— Michael Jordan", author: "Michael Jordan" },
       { text: "“You have to learn how to perform without motivation. Just get the fuck back to work.”", attr: "— David Goggins", author: "David Goggins" },
-      // Newly added (this request)
       { text: "“But how could you live and have no story to tell?”", attr: "— Fyodor Dostoevsky, <em>White Nights</em>", author: "Fyodor Dostoevsky" },
       { text: "“The mystery of human existence lies not in just staying alive, but in finding something to live for.”", attr: "— Fyodor Dostoevsky, <em>The Brothers Karamazov</em>", author: "Fyodor Dostoevsky" },
       { text: "“If there is meaning in life at all, then there must be meaning in suffering.”", attr: "— Viktor E. Frankl", author: "Viktor E. Frankl" },
       { text: "“But there was no need to be ashamed of tears, for tears bore witness that a man had the greatest of courage, the courage to suffer.”", attr: "— Viktor E. Frankl, <em>Man’s Search for Meaning</em>", author: "Viktor E. Frankl" }
     ];
 
-    // Build final pool: dedupe by text, shuffle, then ensure no adjacent quotes share the same author (including after the fixed 'third').
+    // Build final pool: dedupe by text, shuffle, then ensure no adjacent quotes share the same author (including after the fixed 'first').
     const textSeen = new Set();
     function dedupe(list) {
       const out = [];
@@ -114,7 +113,7 @@
       return arr;
     }
 
-    // Ensure no adjacent authors match; also respect the author immediately before the pool (i.e., 'third')
+    // Ensure no adjacent authors match; also respect the author immediately before the pool (i.e., 'first')
     function separateAuthors(arr, prevAuthor) {
       // First, avoid matching the fixed previous author at position 0.
       if (arr.length && arr[0].author === prevAuthor) {
@@ -132,11 +131,11 @@
     }
 
     const pool = separateAuthors(
-      shuffle(dedupe([...basePool, ...requestedAdds])),
-      third.author
+      shuffle(dedupe(poolRaw)),
+      first.author
     );
 
-    const sequence = [first, second, third, ...pool];
+    const sequence = [first, ...pool];
 
     const qw = document.getElementById('qw');
     const qtext = document.getElementById('qtext');
