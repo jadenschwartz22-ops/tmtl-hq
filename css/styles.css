@@ -16,7 +16,9 @@ a:hover,a:focus{opacity:1; text-decoration:underline}
 /* Header */
 header{
   border-bottom:1px solid var(--line);
-  position:sticky; top:0; background:rgba(0,0,0,.65); backdrop-filter:saturate(120%) blur(6px);
+  position:sticky; top:0;
+  background:rgba(0,0,0,.65); backdrop-filter:saturate(120%) blur(6px);
+  z-index:1000; /* keep header above page content */
 }
 .header-inner{display:flex; align-items:center; justify-content:space-between}
 .brand{font-weight:700; letter-spacing:.4px; white-space:nowrap}
@@ -34,7 +36,7 @@ h2{font-size:1rem; margin:1.4em 0 .8em; color:var(--muted); font-weight:600; tex
 /* subtle hero "ocean ripple" */
 .hero{position:relative; overflow:hidden; padding:44px 0 8px}
 .hero::before{
-  content:""; position:absolute; inset:-25vmax; z-index:0; pointer-events:none;
+  content:""; position:absolute; inset:-25vmax; z-index:-1; pointer-events:none; /* keep behind everything */
   background:
     radial-gradient(60vmax 60vmax at 50% 40%, rgba(255,255,255,.04), transparent 60%),
     radial-gradient(50vmax 50vmax at 30% 60%, rgba(255,255,255,.025), transparent 60%),
@@ -52,7 +54,6 @@ h1{animation-delay:.06s}
 #q{opacity:1; transition:opacity 650ms ease}
 .quote-wrap.is-fading #q{opacity:0}
 .quote-lg{
-  /* smaller than before */
   font-size:clamp(1.1rem, 1.4vw + .6rem, 1.7rem);
   line-height:1.35; margin:0 0 .3rem 0; font-weight:600;
 }
