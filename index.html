@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://teachmetolive.com/" />
   <link rel="stylesheet" href="css/styles.css" />
   <meta name="theme-color" content="#000000" />
-  <!-- Slightly smaller quote text (overrides site CSS without touching your file) -->
+  <!-- Slightly smaller quote text -->
   <style>
     .quote-lg   { font-size: 0.92em; line-height: 1.35; }
     .quote-attr { font-size: 0.85em; }
@@ -55,7 +55,7 @@
     // Only the first quote is fixed; all others are randomized.
     const first = { text: "“The unexamined life is not worth living.”", attr: "— Socrates", author: "Socrates" };
 
-    // Full pool (same as your last version)
+    // Full pool (with full-length Seneca restored)
     const poolRaw = [
       { text: "“Though free to think and act, we are held together like stars in the firmament with ties inseparable. These ties cannot be seen, but we can feel them. We are all one.”", attr: "— Nikola Tesla", author: "Nikola Tesla" },
       { text: "“Never was an age more sentimental, more devoid of real feeling, more exaggerated in false feeling, than our own.”", attr: "— D. H. Lawrence", author: "D. H. Lawrence" },
@@ -77,6 +77,7 @@
       { text: "“Was I a little full of myself at nineteen? Sure I was. I think you have to be to do anything important.”", attr: "— Michael Dell", author: "Michael Dell" },
       { text: "“Many people don’t reach their greatest potential because they fear failure. In avoiding failure, they deprive themselves of a great teacher.”", attr: "— Michael Dell", author: "Michael Dell" },
       { text: "“If you would persuade, appeal to interest and not to reason.”", attr: "— Benjamin Franklin, <em>Poor Richard’s Almanack</em> (via Charlie Munger)", author: "Benjamin Franklin" },
+
       { text: "“Who knows where madness lies? Perhaps to be too practical is madness. To surrender dreams—this may be madness. Too much sanity may be madness—and maddest of all: to see life as it is, and not as it should be!”", attr: "— Miguel de Cervantes, <em>Don Quixote</em>", author: "Miguel de Cervantes" },
       { text: "“Paths are made by walking.”", attr: "— Franz Kafka", author: "Franz Kafka" },
       { text: "“What lay beyond the shadows of the yard was an endless view of the world that you wouldn’t be able to see till dawn.”", attr: "— Jack Kerouac, <em>On the Road</em>", author: "Jack Kerouac" },
@@ -85,7 +86,9 @@
       { text: "“Every sorrow suggests a thousand songs, and every song calls a thousand sorrows; and so they are infinite in number, and all the same.”", attr: "— Marilynne Robinson, <em>Housekeeping</em>", author: "Marilynne Robinson" },
       { text: "“I give you the mausoleum of all hope and desire… I give it to you not that you may remember time, but that you might forget it now and then for a moment and not spend all of your breath trying to conquer it. Because no battle is ever won, he said. They are not even fought. The field only reveals to man his own folly and despair, and victory is an illusion of philosophers and fools.”", attr: "— William Faulkner, <em>The Sound and the Fury</em>", author: "William Faulkner" },
       { text: "“If you don’t become bitter, nothing can stop you from success.”", attr: "— Ralph Ellison, <em>Invisible Man</em> (Dr. Bledsoe)", author: "Ralph Ellison" },
-      { text: "“It is not that we have a short time to live, but that we waste a lot of it… Life is long if you know how to use it.”", attr: "— Seneca, <em>On the Shortness of Life</em>", author: "Seneca" },
+
+      { text: "“It is not that we have a short time to live, but that we waste a lot of it. Life is long enough, and a sufficiently generous amount has been given to us for the highest achievements if it were all well invested. But when it is wasted in heedless luxury and spent on no good activity, we are forced at last by death’s final constraint to realize that it has passed away before we knew it was passing. So it is: we are not given a short life but we make it short, and we are not ill-supplied but wasteful of it… Life is long if you know how to use it.”", attr: "— Seneca, <em>On the Shortness of Life</em>", author: "Seneca" },
+
       { text: "“I will tell his majesty what a king is. A king does not abide within his tent while his men bleed and die upon the field. A king does not dine while his men go hungry, nor sleep when they stand at watch upon the wall. A king does not command his men’s loyalty through fear nor purchase it with gold; he earns their love by the sweat of his own back and the pains he endures for their sake. That which comprises the harshest burden, a king lifts first and sets down last. A king does not require service of those he leads but provides it to them. He serves them, not they him.”", attr: "— Steven Pressfield, <em>Gates of Fire</em> (Xeones)", author: "Steven Pressfield" },
       { text: "“I focus on the little things. The little things add up to big things.”", attr: "— Michael Jordan", author: "Michael Jordan" },
       { text: "“You have to learn how to perform without motivation. Just get the fuck back to work.”", attr: "— David Goggins", author: "David Goggins" },
@@ -118,7 +121,7 @@
       const base = 10;             // seconds
       const L = plainLen(q.text);
       const extra = Math.max(0, (L - 140) / 28); // ~+1s per ~28 chars beyond 140
-      return Math.min(base + extra, 22);         // cap so it never drags
+      return Math.min(base + extra, 26);         // small cap so it never drags
     }
 
     const pool = shuffle(dedupe(poolRaw));
