@@ -9,6 +9,11 @@
   <link rel="canonical" href="https://teachmetolive.com/" />
   <link rel="stylesheet" href="css/styles.css" />
   <meta name="theme-color" content="#000000" />
+  <!-- Slightly smaller quote text (overrides site CSS without touching your file) -->
+  <style>
+    .quote-lg   { font-size: 0.92em; line-height: 1.35; }
+    .quote-attr { font-size: 0.85em; }
+  </style>
 </head>
 <body>
   <header>
@@ -50,13 +55,10 @@
     // Only the first quote is fixed; all others are randomized.
     const first = { text: "“The unexamined life is not worth living.”", attr: "— Socrates", author: "Socrates" };
 
-    // Full pool of remaining quotes (no duplicates; titles italicized where appropriate)
+    // Full pool (same as your last version)
     const poolRaw = [
-      // Previously "second" and "third" are now part of the random pool:
       { text: "“Though free to think and act, we are held together like stars in the firmament with ties inseparable. These ties cannot be seen, but we can feel them. We are all one.”", attr: "— Nikola Tesla", author: "Nikola Tesla" },
       { text: "“Never was an age more sentimental, more devoid of real feeling, more exaggerated in false feeling, than our own.”", attr: "— D. H. Lawrence", author: "D. H. Lawrence" },
-
-      // Original base pool
       { text: "“There is no tomorrow.”", attr: "— <em>Rocky III</em>", author: "Rocky III" },
       { text: "“Pause, you who read this, and think for a moment of the long chain of iron or gold, of thorns or flowers, that would never have bound you, but for the formation of the first link on one memorable day.”", attr: "— Charles Dickens, <em>Great Expectations</em>", author: "Charles Dickens" },
       { text: "“Forever is composed of nows.”", attr: "— Emily Dickinson", author: "Emily Dickinson" },
@@ -75,8 +77,6 @@
       { text: "“Was I a little full of myself at nineteen? Sure I was. I think you have to be to do anything important.”", attr: "— Michael Dell", author: "Michael Dell" },
       { text: "“Many people don’t reach their greatest potential because they fear failure. In avoiding failure, they deprive themselves of a great teacher.”", attr: "— Michael Dell", author: "Michael Dell" },
       { text: "“If you would persuade, appeal to interest and not to reason.”", attr: "— Benjamin Franklin, <em>Poor Richard’s Almanack</em> (via Charlie Munger)", author: "Benjamin Franklin" },
-
-      // Requested additions
       { text: "“Who knows where madness lies? Perhaps to be too practical is madness. To surrender dreams—this may be madness. Too much sanity may be madness—and maddest of all: to see life as it is, and not as it should be!”", attr: "— Miguel de Cervantes, <em>Don Quixote</em>", author: "Miguel de Cervantes" },
       { text: "“Paths are made by walking.”", attr: "— Franz Kafka", author: "Franz Kafka" },
       { text: "“What lay beyond the shadows of the yard was an endless view of the world that you wouldn’t be able to see till dawn.”", attr: "— Jack Kerouac, <em>On the Road</em>", author: "Jack Kerouac" },
@@ -95,58 +95,52 @@
       { text: "“But there was no need to be ashamed of tears, for tears bore witness that a man had the greatest of courage, the courage to suffer.”", attr: "— Viktor E. Frankl, <em>Man’s Search for Meaning</em>", author: "Viktor E. Frankl" }
     ];
 
-    // Build final pool: dedupe by text, shuffle, then ensure no adjacent quotes share the same author (including after the fixed 'first').
+    // --- Helper utilities ---
     const textSeen = new Set();
-    function dedupe(list) {
+    function dedupe(list){
       const out = [];
-      for (const q of list) {
-        if (!textSeen.has(q.text)) { textSeen.add(q.text); out.push(q); }
-      }
+      for (const q of list) if (!textSeen.has(q.text)) { textSeen.add(q.text); out.push(q); }
       return out;
     }
-
-    function shuffle(arr) {
+    function shuffle(arr){
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
       return arr;
     }
-
-    // Ensure no adjacent authors match; also respect the author immediately before the pool (i.e., 'first')
-    function separateAuthors(arr, prevAuthor) {
-      // First, avoid matching the fixed previous author at position 0.
-      if (arr.length && arr[0].author === prevAuthor) {
-        const swapIdx = arr.findIndex((q, i) => i > 0 && q.author !== prevAuthor);
-        if (swapIdx > 0) [arr[0], arr[swapIdx]] = [arr[swapIdx], arr[0]];
-      }
-      // Then, walk and swap when a conflict is found.
-      for (let i = 1; i < arr.length; i++) {
-        if (arr[i].author === arr[i - 1].author) {
-          const j = arr.findIndex((q, k) => k > i && q.author !== arr[i - 1].author);
-          if (j > i) [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-      }
-      return arr;
+    // Slightly longer display time for longer quotes (base ~10s).
+    function plainLen(html){
+      const el = document.createElement('div'); el.innerHTML = html;
+      return (el.textContent || "").trim().length;
+    }
+    function durationFor(q){
+      const base = 10;             // seconds
+      const L = plainLen(q.text);
+      const extra = Math.max(0, (L - 140) / 28); // ~+1s per ~28 chars beyond 140
+      return Math.min(base + extra, 22);         // cap so it never drags
     }
 
-    const pool = separateAuthors(
-      shuffle(dedupe(poolRaw)),
-      first.author
-    );
-
+    const pool = shuffle(dedupe(poolRaw));
     const sequence = [first, ...pool];
 
-    const qw = document.getElementById('qw');
-    const qtext = document.getElementById('qtext');
-    const qattr = document.getElementById('qattr');
-    const bar = document.getElementById('qbar');
+    const qw   = document.getElementById('qw');
+    const qtext= document.getElementById('qtext');
+    const qattr= document.getElementById('qattr');
+    const bar  = document.getElementById('qbar');
 
     let idx = 0, timer = null;
 
-    function restartBar(){
+    function restartBar(dur){
       bar.style.animation = 'none'; void bar.offsetWidth;
-      bar.style.animation = 'fill 10s linear forwards';
+      bar.style.animation = `fill ${dur}s linear forwards`;
+    }
+
+    function scheduleNext(){
+      const dur = durationFor(sequence[idx]);
+      restartBar(dur);
+      clearTimeout(timer);
+      timer = setTimeout(() => setQuote(idx + 1), dur * 1000);
     }
 
     function setQuote(i){
@@ -157,19 +151,12 @@
         qtext.innerHTML = text;
         qattr.innerHTML = attr;
         qw.classList.remove('is-fading');
-        restartBar();
+        scheduleNext();
       }, 325); // mid-fade swap
-    }
-
-    function auto(){
-      timer && clearInterval(timer);
-      timer = setInterval(() => setQuote(idx + 1), 10000);
-      restartBar();
     }
 
     // init
     setQuote(0);
-    auto();
   </script>
 </body>
 </html>
