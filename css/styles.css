@@ -2,13 +2,17 @@
 :root{
   --bg:#000; --fg:#f3f3f3; --muted:#a8a8a8; --line:#1a1a1a; --card:#0b0b0b; --radius:14px;
 }
+
 *{box-sizing:border-box}
 html,body{height:100%}
+html{-webkit-text-size-adjust:100%; text-size-adjust:100%} /* stop iOS auto-zoom */
+
 body{
   margin:0; color:var(--fg); background:var(--bg);
   font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
+
 a{color:var(--fg); opacity:.92; text-decoration:none}
 a:hover,a:focus{opacity:1; text-decoration:underline}
 .wrap{max-width:960px; margin:0 auto; padding:24px}
@@ -20,23 +24,35 @@ header{
   background:rgba(0,0,0,.65); backdrop-filter:saturate(120%) blur(6px);
   z-index:1000; /* keep header above page content */
 }
-.header-inner{display:flex; align-items:center; justify-content:space-between}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:12px}
 .brand{font-weight:700; letter-spacing:.4px; white-space:nowrap}
-nav{display:flex; gap:18px}
+nav{display:flex; gap:18px; flex-wrap:wrap}
 
-/* General */
+/* Main */
 main{padding:24px 0}
 .center{text-align:center}
-h1{font-size:2.8rem; line-height:1.1; margin:.2em 0 .3em}
-h2{font-size:1rem; margin:1.4em 0 .8em; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.12em}
-.lede{color:var(--muted); max-width:62ch; margin:0 auto 10px auto}
-.logo{width:140px; height:auto; display:block; margin:24px auto 8px auto}
-.logo--big{width:260px; margin-top:22px}
 
-/* subtle hero "ocean ripple" */
+/* Fluid headings */
+h1{
+  font-size:clamp(1.8rem, 4.6vw + .4rem, 2.8rem);
+  line-height:1.12; margin:.2em 0 .3em;
+}
+h2{
+  font-size:clamp(.9rem, .6vw + .7rem, 1rem);
+  margin:1.4em 0 .8em; color:var(--muted);
+  font-weight:600; text-transform:uppercase; letter-spacing:.12em;
+}
+h3{margin:.2em 0 .4em}
+.lede{color:var(--muted); max-width:62ch; margin:0 auto 10px}
+
+/* Logos */
+.logo{width:140px; height:auto; display:block; margin:24px auto 8px}
+.logo--big{width:min(260px,56vw); margin-top:22px}
+
+/* Subtle hero ripple */
 .hero{position:relative; overflow:hidden; padding:44px 0 8px}
 .hero::before{
-  content:""; position:absolute; inset:-25vmax; z-index:-1; pointer-events:none; /* keep behind everything */
+  content:""; position:absolute; inset:-25vmax; z-index:-1; pointer-events:none;
   background:
     radial-gradient(60vmax 60vmax at 50% 40%, rgba(255,255,255,.04), transparent 60%),
     radial-gradient(50vmax 50vmax at 30% 60%, rgba(255,255,255,.025), transparent 60%),
@@ -54,10 +70,10 @@ h1{animation-delay:.06s}
 #q{opacity:1; transition:opacity 650ms ease}
 .quote-wrap.is-fading #q{opacity:0}
 .quote-lg{
-  font-size:clamp(1.1rem, 1.4vw + .6rem, 1.7rem);
-  line-height:1.35; margin:0 0 .3rem 0; font-weight:600;
+  font-size:clamp(1.05rem, 1.2vw + .65rem, 1.6rem);
+  line-height:1.35; margin:0 0 .3rem; font-weight:600;
 }
-.quote-attr{color:var(--muted); margin:.2rem 0 0 0}
+.quote-attr{color:var(--muted); margin:.2rem 0 0}
 .quote-progress{
   height:2px; width:100%; background:var(--line); overflow:hidden; border-radius:2px; margin-top:10px;
 }
@@ -68,23 +84,49 @@ h1{animation-delay:.06s}
 }
 @keyframes fill{from{width:0%} to{width:100%}}
 
-/* Cards/figures used on other pages */
+/* Cards / Figures */
 .grid{display:grid; gap:18px}
 .grid.cards{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.card{border:1px solid var(--line); background:var(--card); border-radius:var(--radius); padding:18px}
+
+/* make cards feel clickable */
+.card{position:relative; border:1px solid var(--line); background:var(--card); border-radius:var(--radius); padding:18px; transition:border-color .15s ease, transform .15s ease}
+.card:hover{border-color:#2a2a2a; transform:translateY(-2px)}
 .card p:last-child{margin-bottom:0}
-.thumb{width:100%; aspect-ratio:16/9; border:1px solid var(--line); border-radius:10px; background:#0a0a0a; margin-bottom:10px; overflow:hidden}
-.thumb img{width:100%; height:100%; object-fit:cover; display:block}
-.caption{color:var(--muted); font-size:.9rem; margin-top:8px; text-align:center}
+
+/* BIGGER, square, clickable logos */
+.thumb{
+  width:100%;
+  aspect-ratio:1/1;                 /* square tile */
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#0a0a0a;
+  margin-bottom:10px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.thumb img{
+  width:88%;
+  height:88%;
+  object-fit:contain;               /* keep full logo visible */
+  display:block;
+}
+.thumb:hover{border-color:#2a2a2a}
+
+/* Figures on About */
 figure{margin:0}
 figure img{width:100%; height:auto; border-radius:12px; display:block; border:1px solid var(--line); background:#000}
+.caption{color:var(--muted); font-size:.92rem; margin-top:8px; text-align:center}
+
+/* Optional monochrome helper */
+.mono{filter:grayscale(100%) contrast(110%) brightness(95%)}
 
 /* Footer */
 hr.sep{border:0; border-top:1px solid var(--line); margin:36px 0}
 footer{border-top:1px solid var(--line); margin-top:40px}
 small{color:var(--muted)}
 
-/* Forms */
+/* Buttons / Forms */
 .btn{
   display:inline-block; border:1px solid var(--line); padding:10px 14px; border-radius:999px;
   text-decoration:none; transition:transform .06s ease, border-color .15s ease;
@@ -98,3 +140,9 @@ button[type=submit]{cursor:pointer}
 .success,.error{display:none; font-size:.95rem}
 .success{color:#a6ffb5}
 .error{color:#ff9b9b}
+
+/* Mobile polish */
+@media (max-width:640px){
+  .wrap{padding:18px}
+  nav{gap:14px}
+}
