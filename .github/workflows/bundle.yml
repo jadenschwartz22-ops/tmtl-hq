@@ -1,0 +1,41 @@
+name: Build Site Bundle
+
+on:
+  workflow_dispatch: {}   # adds the "Run workflow" button
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # allow committing the output
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Concatenate HTML & CSS
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -type f \( -name "*.html" -o -name "*.css" \) \
+            ! -path "./assets/*" ! -name "favicon.*" ! -name "CNAME" -print0 \
+          | sort -z \
+          | xargs -0 -I{} bash -c '
+            f="{}"; rel="${f#./}";
+            printf "BEGIN FILE:%s\n" "$rel";
+            cat "$f";
+            printf "\nEND FILE:%s\n\n" "$rel";
+          ' > site_bundle.txt
+
+      - name: Commit site_bundle.txt to repo
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site_bundle.txt
+          git commit -m "Auto-generate site bundle" || echo "No changes to commit"
+          git push
+
+      - name: Also upload as downloadable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site_bundle
+          path: site_bundle.txt
