@@ -1,0 +1,596 @@
+BEGIN FILE:about.html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>About — Teach Me to Live</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" href="/favicon.ico" sizes="any">
+
+</head>
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">Teach Me to Live</a>
+      <nav>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>About TMTL</h1>
+    <p class="lede">
+  Teach Me to Live is building intentional software in a world full of distractions.
+  The goal is to use technology for good: to bring people together, when it so
+  typically pulls us apart. Enjoy.
+</p>
+
+
+    <div class="grid cards">
+      <article class="card">
+        <figure>
+          <img src="assets/plato.jpg" alt="Marble figure of a philosopher"
+               onerror="this.onerror=null; this.src='assets/logo.png';" />
+          <figcaption class="caption">Philosophy</figcaption>
+        </figure>
+        <p><em>Virtue. Intention. Care.</em> We learn more from eachother than we can by ourselves.</p>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="assets/logo.png" alt="TMTL emblem" />
+          <figcaption class="caption">Practice</figcaption>
+        </figure>
+        <p>Living with purpose, dedication, and foresight.</p>
+      </article>
+
+      <article class="card">
+        <figure>
+          <img src="assets/sisyphus.jpg" alt="Silhouette pushing a boulder uphill at dusk"
+               onerror="this.onerror=null; this.src='assets/logo.png';" />
+          <figcaption class="caption">Mission</figcaption>
+        </figure>
+        <p><strong>Change the world.</strong> Use technology to strengthen connection, and support those who serve others.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="wrap">
+    <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
+  </footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
+
+END FILE:about.html
+
+BEGIN FILE:contact.html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Contact — Teach Me to Live</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any">
+
+  <meta name="theme-color" content="#000000" />
+</head>
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">Teach Me to Live</a>
+      <nav>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Contact</h1>
+    <p class="lede">Say hello, give feedback, tell us what you think.</p>
+
+    <div class="card" style="max-width:560px;margin-top:16px">
+      <form id="contact" action="https://formspree.io/f/xeorropn" method="POST" novalidate>
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <textarea name="message" placeholder="Message" required></textarea>
+
+        <input type="hidden" name="_subject" value="TMTL Contact" />
+        <input type="text" name="_honeypot" style="display:none" tabindex="-1" autocomplete="off" />
+
+        <button class="btn" type="submit">Send</button>
+        <div class="success" id="ok" role="status">Thanks — we got it.</div>
+        <div class="error" id="err" role="alert">Hmm, something went wrong. Try again later.</div>
+      </form>
+    </div>
+
+    <p class="lede" style="margin-top:18px">Prefer email? <a href="mailto:nathaniel@teachmetolive.com">nathaniel@teachmetolive.com</a></p>
+  </main>
+
+  <footer class="wrap">
+    <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const form = document.getElementById('contact');
+    const ok = document.getElementById('ok');
+    const err = document.getElementById('err');
+    ok.style.display = err.style.display = 'none';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ok.style.display = err.style.display = 'none';
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).catch(() => null);
+      if (res && res.ok) { form.reset(); ok.style.display = 'block'; }
+      else { err.style.display = 'block'; }
+    });
+  </script>
+</body>
+</html>
+
+END FILE:contact.html
+
+BEGIN FILE:css/styles.css
+/* --- TMTL minimal dark theme --- */
+:root{
+  --bg:#000; --fg:#f3f3f3; --muted:#a8a8a8; --line:#1a1a1a; --card:#0b0b0b; --radius:14px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+html{-webkit-text-size-adjust:100%; text-size-adjust:100%} /* stop iOS auto-zoom */
+
+body{
+  margin:0; color:var(--fg); background:var(--bg);
+  font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+
+a{color:var(--fg); opacity:.92; text-decoration:none}
+a:hover,a:focus{opacity:1; text-decoration:underline}
+.wrap{max-width:960px; margin:0 auto; padding:24px}
+
+/* Header */
+header{
+  border-bottom:1px solid var(--line);
+  position:sticky; top:0;
+  background:rgba(0,0,0,.65); backdrop-filter:saturate(120%) blur(6px);
+  z-index:1000; /* keep header above page content */
+}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.brand{font-weight:700; letter-spacing:.4px; white-space:nowrap}
+nav{display:flex; gap:18px; flex-wrap:wrap}
+
+/* Main */
+main{padding:24px 0}
+.center{text-align:center}
+
+/* Fluid headings */
+h1{
+  font-size:clamp(1.8rem, 4.6vw + .4rem, 2.8rem);
+  line-height:1.12; margin:.2em 0 .3em;
+}
+h2{
+  font-size:clamp(.9rem, .6vw + .7rem, 1rem);
+  margin:1.4em 0 .8em; color:var(--muted);
+  font-weight:600; text-transform:uppercase; letter-spacing:.12em;
+}
+h3{margin:.2em 0 .4em}
+.lede{
+  color: var(--muted);
+  max-width: 62ch;
+  margin: 0 auto 10px;
+  text-align: center;   /* ← add this */
+}
+
+
+/* Logos */
+.logo{width:140px; height:auto; display:block; margin:24px auto 8px}
+.logo--big{width:min(260px,56vw); margin-top:22px}
+
+/* Subtle hero ripple */
+.hero{position:relative; overflow:hidden; padding:44px 0 8px}
+.hero::before{
+  content:""; position:absolute; inset:-25vmax; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(60vmax 60vmax at 50% 40%, rgba(255,255,255,.04), transparent 60%),
+    radial-gradient(50vmax 50vmax at 30% 60%, rgba(255,255,255,.025), transparent 60%),
+    radial-gradient(40vmax 40vmax at 70% 70%, rgba(255,255,255,.03), transparent 60%);
+  filter: blur(30px);
+  animation: drift 24s linear infinite alternate;
+}
+@keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(2%,-1%,0) scale(1.02)}}
+@keyframes rise{from{opacity:0; transform:translateY(6px) scale(.985)} to{opacity:1; transform:none}}
+.logo, h1{animation:rise .75s ease-out both}
+h1{animation-delay:.06s}
+
+/* Quote block (home) */
+.quote-wrap{max-width:70ch; margin:28px auto 0; position:relative}
+#q{opacity:1; transition:opacity 650ms ease}
+.quote-wrap.is-fading #q{opacity:0}
+.quote-lg{
+  font-size:clamp(1.05rem, 1.2vw + .65rem, 1.6rem);
+  line-height:1.35; margin:0 0 .3rem; font-weight:600;
+}
+.quote-attr{color:var(--muted); margin:.2rem 0 0}
+.quote-progress{
+  height:2px; width:100%; background:var(--line); overflow:hidden; border-radius:2px; margin-top:10px;
+}
+.progress-bar{
+  height:100%; width:0%;
+  background:linear-gradient(to right, #6a6a6a, #bdbdbd);
+  animation:fill 10s linear forwards;
+}
+@keyframes fill{from{width:0%} to{width:100%}}
+
+/* Cards / Figures */
+.grid{display:grid; gap:18px}
+.grid.cards{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+
+/* make cards feel clickable */
+.card{position:relative; border:1px solid var(--line); background:var(--card); border-radius:var(--radius); padding:18px; transition:border-color .15s ease, transform .15s ease}
+.card:hover{border-color:#2a2a2a; transform:translateY(-2px)}
+.card p:last-child{margin-bottom:0}
+
+/* BIGGER, square, clickable logos */
+.thumb{
+  width:100%;
+  aspect-ratio:1/1;                 /* square tile */
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#0a0a0a;
+  margin-bottom:10px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.thumb img{
+  width:88%;
+  height:88%;
+  object-fit:contain;               /* keep full logo visible */
+  display:block;
+}
+.thumb:hover{border-color:#2a2a2a}
+
+/* Figures on About */
+figure{margin:0}
+figure img{width:100%; height:auto; border-radius:12px; display:block; border:1px solid var(--line); background:#000}
+.caption{color:var(--muted); font-size:.92rem; margin-top:8px; text-align:center}
+
+/* Optional monochrome helper */
+.mono{filter:grayscale(100%) contrast(110%) brightness(95%)}
+
+/* Footer */
+hr.sep{border:0; border-top:1px solid var(--line); margin:36px 0}
+footer{border-top:1px solid var(--line); margin-top:40px}
+small{color:var(--muted)}
+
+/* Buttons / Forms */
+.btn{
+  display:inline-block; border:1px solid var(--line); padding:10px 14px; border-radius:999px;
+  text-decoration:none; transition:transform .06s ease, border-color .15s ease;
+}
+.btn:hover{border-color:#2a2a2a; transform:translateY(-1px)}
+form{display:grid; gap:12px; max-width:520px}
+input,textarea{width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:#0a0a0a; color:var(--fg)}
+input::placeholder, textarea::placeholder{color:#7a7a7a}
+textarea{min-height:140px; resize:vertical}
+button[type=submit]{cursor:pointer}
+.success,.error{display:none; font-size:.95rem}
+.success{color:#a6ffb5}
+.error{color:#ff9b9b}
+
+/* Mobile polish */
+@media (max-width:640px){
+  .wrap{padding:18px}
+  nav{gap:14px}
+}
+
+END FILE:css/styles.css
+
+BEGIN FILE:index.html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Teach Me to Live — Tools for Learning</title>
+  <meta name="description" content="Intentional, minimalist software for learning. Minimal noise, maximal signal." />
+  <link rel="canonical" href="https://teachmetolive.com/" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any">
+
+  <meta name="theme-color" content="#000000" />
+  <!-- Slightly smaller quote text -->
+  <style>
+    .quote-lg   { font-size: 0.92em; line-height: 1.35; }
+    .quote-attr { font-size: 0.85em; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="Teach Me to Live — home">Teach Me to Live</a>
+      <nav>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap center">
+    <section class="hero">
+      <img class="logo logo--big" src="assets/logo.png" alt="Teach Me to Live emblem" />
+      <h1>Tools for Learning</h1>
+    </section>
+
+    <!-- Rotating quote -->
+    <section class="quote-wrap" aria-live="polite" id="qw">
+      <div id="q">
+        <div id="qtext" class="quote-lg">“The unexamined life is not worth living.”</div>
+        <div id="qattr" class="quote-attr">— Socrates</div>
+      </div>
+      <div class="quote-progress"><div id="qbar" class="progress-bar"></div></div>
+    </section>
+
+    <hr class="sep" />
+  </main>
+
+  <footer class="wrap">
+    <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Only the first quote is fixed; all others are randomized.
+    const first = { text: "“The unexamined life is not worth living.”", attr: "— Socrates", author: "Socrates" };
+
+    // Full pool (with full-length Seneca restored)
+    const poolRaw = [
+      { text: "“Though free to think and act, we are held together like stars in the firmament with ties inseparable. These ties cannot be seen, but we can feel them. We are all one.”", attr: "— Nikola Tesla", author: "Nikola Tesla" },
+      { text: "“Never was an age more sentimental, more devoid of real feeling, more exaggerated in false feeling, than our own.”", attr: "— D. H. Lawrence", author: "D. H. Lawrence" },
+      { text: "“There is no tomorrow.”", attr: "— <em>Rocky III</em>", author: "Rocky III" },
+      { text: "“Pause, you who read this, and think for a moment of the long chain of iron or gold, of thorns or flowers, that would never have bound you, but for the formation of the first link on one memorable day.”", attr: "— Charles Dickens, <em>Great Expectations</em>", author: "Charles Dickens" },
+      { text: "“Forever is composed of nows.”", attr: "— Emily Dickinson", author: "Emily Dickinson" },
+      { text: "“I dwell in Possibility.”", attr: "— Emily Dickinson", author: "Emily Dickinson" },
+      { text: "“And so the ordinary demanded unblinking attention. Any tedious hour might be the last of its kind.”", attr: "— Marilynne Robinson, <em>Housekeeping</em>", author: "Marilynne Robinson" },
+      { text: "“If your mouth is open, you're not learning.”", attr: "— Gautama Buddha", author: "Gautama Buddha" },
+      { text: "“One extends one's limits only by exceeding them.”", attr: "— M. Scott Peck", author: "M. Scott Peck" },
+      { text: "“Until you value yourself, you won't value your time. Until you value your time, you will not do anything with it.”", attr: "— M. Scott Peck", author: "M. Scott Peck" },
+      { text: "“We have two lives, and the second begins when we realize we only have one.”", attr: "— Confucius", author: "Confucius" },
+      { text: "“A man never discloses his own character so clearly as when he describes another's.”", attr: "— Jean Paul Richter", author: "Jean Paul Richter" },
+      { text: "“Where to, Miss?” “To the stars.”", attr: "— <em>Titanic</em>", author: "Titanic" },
+      { text: "“In Pittsburgh, in 1966, twenty-four Black men from the Hill answered a call for help and in the process changed the world. They were sons and fathers, bookbinders, mechanics, orderlies. They were paramedics, and they came from Freedom House… They did something truly remarkable, and their story goes something like this.”", attr: "— Kevin Hazzard, <em>American Sirens</em>", author: "Kevin Hazzard" },
+      { text: "“Who knows what you might learn from taking a chance on conversation with a stranger? Everyone carries a piece of the puzzle. Nobody comes into your life by mere coincidence. Trust your instincts. Do the unexpected. Find the others…”", attr: "— Timothy Leary", author: "Timothy Leary" },
+      { text: "“In other words, self-actualization is possible only as a side-effect of self-transcendence.”", attr: "— Viktor E. Frankl, <em>Man’s Search for Meaning</em>", author: "Viktor E. Frankl" },
+      { text: "“We live together, we act on and react to one another; but always, and in all circumstances, we are by ourselves… From family to nation every human group is a society of island universes.”", attr: "— Aldous Huxley, <em>The Doors of Perception</em>", author: "Aldous Huxley" },
+      { text: "“Was I a little full of myself at nineteen? Sure I was. I think you have to be to do anything important.”", attr: "— Michael Dell", author: "Michael Dell" },
+      { text: "“Many people don’t reach their greatest potential because they fear failure. In avoiding failure, they deprive themselves of a great teacher.”", attr: "— Michael Dell", author: "Michael Dell" },
+      { text: "“If you would persuade, appeal to interest and not to reason.”", attr: "— Benjamin Franklin, <em>Poor Richard’s Almanack</em> (via Charlie Munger)", author: "Benjamin Franklin" },
+
+      { text: "“Who knows where madness lies? Perhaps to be too practical is madness. To surrender dreams—this may be madness. Too much sanity may be madness—and maddest of all: to see life as it is, and not as it should be!”", attr: "— Miguel de Cervantes, <em>Don Quixote</em>", author: "Miguel de Cervantes" },
+      { text: "“Paths are made by walking.”", attr: "— Franz Kafka", author: "Franz Kafka" },
+      { text: "“What lay beyond the shadows of the yard was an endless view of the world that you wouldn’t be able to see till dawn.”", attr: "— Jack Kerouac, <em>On the Road</em>", author: "Jack Kerouac" },
+      { text: "“What a stupendous, what an incomprehensible machine is man! Who can endure toil, famine, stripes, imprisonment & death itself in vindication of his own liberty, and the next moment… inflict on his fellow men a bondage, one hour of which is fraught with more misery than ages of that which he rose in rebellion to oppose.”", attr: "— Thomas Jefferson", author: "Thomas Jefferson" },
+      { text: "“We live as we dream—alone.”", attr: "— Joseph Conrad, <em>Heart of Darkness</em>", author: "Joseph Conrad" },
+      { text: "“Every sorrow suggests a thousand songs, and every song calls a thousand sorrows; and so they are infinite in number, and all the same.”", attr: "— Marilynne Robinson, <em>Housekeeping</em>", author: "Marilynne Robinson" },
+      { text: "“I give you the mausoleum of all hope and desire… I give it to you not that you may remember time, but that you might forget it now and then for a moment and not spend all of your breath trying to conquer it. Because no battle is ever won, he said. They are not even fought. The field only reveals to man his own folly and despair, and victory is an illusion of philosophers and fools.”", attr: "— William Faulkner, <em>The Sound and the Fury</em>", author: "William Faulkner" },
+      { text: "“If you don’t become bitter, nothing can stop you from success.”", attr: "— Ralph Ellison, <em>Invisible Man</em> (Dr. Bledsoe)", author: "Ralph Ellison" },
+
+      { text: "“It is not that we have a short time to live, but that we waste a lot of it. Life is long enough, and a sufficiently generous amount has been given to us for the highest achievements if it were all well invested. But when it is wasted in heedless luxury and spent on no good activity, we are forced at last by death’s final constraint to realize that it has passed away before we knew it was passing. So it is: we are not given a short life but we make it short, and we are not ill-supplied but wasteful of it… Life is long if you know how to use it.”", attr: "— Seneca, <em>On the Shortness of Life</em>", author: "Seneca" },
+
+      { text: "“I will tell his majesty what a king is. A king does not abide within his tent while his men bleed and die upon the field. A king does not dine while his men go hungry, nor sleep when they stand at watch upon the wall. A king does not command his men’s loyalty through fear nor purchase it with gold; he earns their love by the sweat of his own back and the pains he endures for their sake. That which comprises the harshest burden, a king lifts first and sets down last. A king does not require service of those he leads but provides it to them. He serves them, not they him.”", attr: "— Steven Pressfield, <em>Gates of Fire</em> (Xeones)", author: "Steven Pressfield" },
+      { text: "“I focus on the little things. The little things add up to big things.”", attr: "— Michael Jordan", author: "Michael Jordan" },
+      { text: "“You have to learn how to perform without motivation. Just get the fuck back to work.”", attr: "— David Goggins", author: "David Goggins" },
+      { text: "“But how could you live and have no story to tell?”", attr: "— Fyodor Dostoevsky, <em>White Nights</em>", author: "Fyodor Dostoevsky" },
+      { text: "“The mystery of human existence lies not in just staying alive, but in finding something to live for.”", attr: "— Fyodor Dostoevsky, <em>The Brothers Karamazov</em>", author: "Fyodor Dostoevsky" },
+      { text: "“If there is meaning in life at all, then there must be meaning in suffering.”", attr: "— Viktor E. Frankl", author: "Viktor E. Frankl" },
+      { text: "“But there was no need to be ashamed of tears, for tears bore witness that a man had the greatest of courage, the courage to suffer.”", attr: "— Viktor E. Frankl, <em>Man’s Search for Meaning</em>", author: "Viktor E. Frankl" }
+    ];
+
+    // --- Helper utilities ---
+    const textSeen = new Set();
+    function dedupe(list){
+      const out = [];
+      for (const q of list) if (!textSeen.has(q.text)) { textSeen.add(q.text); out.push(q); }
+      return out;
+    }
+    function shuffle(arr){
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    // Slightly longer display time for longer quotes (base ~10s).
+    function plainLen(html){
+      const el = document.createElement('div'); el.innerHTML = html;
+      return (el.textContent || "").trim().length;
+    }
+    function durationFor(q){
+      const base = 10;             // seconds
+      const L = plainLen(q.text);
+      const extra = Math.max(0, (L - 140) / 28); // ~+1s per ~28 chars beyond 140
+      return Math.min(base + extra, 26);         // small cap so it never drags
+    }
+
+    const pool = shuffle(dedupe(poolRaw));
+    const sequence = [first, ...pool];
+
+    const qw   = document.getElementById('qw');
+    const qtext= document.getElementById('qtext');
+    const qattr= document.getElementById('qattr');
+    const bar  = document.getElementById('qbar');
+
+    let idx = 0, timer = null;
+
+    function restartBar(dur){
+      bar.style.animation = 'none'; void bar.offsetWidth;
+      bar.style.animation = `fill ${dur}s linear forwards`;
+    }
+
+    function scheduleNext(){
+      const dur = durationFor(sequence[idx]);
+      restartBar(dur);
+      clearTimeout(timer);
+      timer = setTimeout(() => setQuote(idx + 1), dur * 1000);
+    }
+
+    function setQuote(i){
+      idx = (i + sequence.length) % sequence.length;
+      qw.classList.add('is-fading');
+      setTimeout(() => {
+        const { text, attr } = sequence[idx];
+        qtext.innerHTML = text;
+        qattr.innerHTML = attr;
+        qw.classList.remove('is-fading');
+        scheduleNext();
+      }, 325); // mid-fade swap
+    }
+
+    // init
+    setQuote(0);
+  </script>
+</body>
+</html>
+
+END FILE:index.html
+
+BEGIN FILE:privacy.html
+<!doctype html>
+<html lang="en"><head>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="dark"/><title>Privacy — TMTL</title>
+<link rel="stylesheet" href="css/styles.css"/></head>
+<body>
+<header><div class="wrap header-inner"><a class="brand" href="index.html">TMTL</a><nav>
+<a href="projects.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+</nav></div></header>
+<main class="wrap">
+  <h1>Privacy</h1>
+  <p class="lede">We keep things minimal and respect your time and attention.</p>
+  <p>We don’t sell personal data. We collect only what’s needed to run our apps, improve performance, and fix bugs. For any questions, contact us at <a href="mailto:nathaniel@teachmetolive.com">nathaniel@teachmetolive.com</a>.</p>
+</main>
+<footer class="wrap"><small>© <span id="y"></span> Teach Me To Live LLC</small></footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body></html>
+
+END FILE:privacy.html
+
+BEGIN FILE:projects.html
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Projects — Teach Me to Live</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="canonical" href="https://teachmetolive.com/projects.html" />
+</head>
+<body>
+  <header>
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">Teach Me to Live</a>
+      <nav>
+        <a href="about.html">About</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Projects</h1>
+    <p class="lede">A collection of focused tools.</p>
+
+
+    <div class="grid cards">
+      <!-- EMS ProtoQuiz -->
+      <article class="card">
+        <a class="thumb" href="https://Protoquiz.com" target="_blank" rel="noopener" aria-label="Open Protoquiz.com">
+          <img src="assets/protoquiz.png" alt="EMS ProtoQuiz logo">
+        </a>
+        <h3>EMS ProtoQuiz</h3>
+        <p>Quizzes and scenarios for EMS built from your local protocols — for practice that sticks.</p>
+        <p><a class="btn" href="https://Protoquiz.com" target="_blank" rel="noopener">Protoquiz.com</a></p>
+      </article>
+
+      <!-- Teach Me To Live (iOS) -->
+      <article class="card">
+        <a class="thumb" href="https://apps.apple.com/us/app/teach-me-to-live/id6745646371" target="_blank" rel="noopener" aria-label="Open Teach Me To Live on the App Store">
+          <img src="assets/logo.png" alt="Teach Me To Live app mark">
+        </a>
+        <h3>Teach Me To Live (iOS)</h3>
+        <p>Share wisdom anonymously that disappears at the end of the month.</p>
+        <p><a class="btn" href="https://apps.apple.com/us/app/teach-me-to-live/id6745646371" target="_blank" rel="noopener">App Store</a></p>
+      </article>
+
+      <!-- SleepMedic -->
+      <article class="card">
+        <a class="thumb" href="https://Sleepmedic.co" target="_blank" rel="noopener" aria-label="Open Sleepmedic.co">
+          <img src="assets/sleepmedic.jpg" alt="SleepMedic mark">
+        </a>
+        <h3>SleepMedic</h3>
+        <p>Science-backed sleep education with practical advice.</p>
+        <p><a class="btn" href="https://Sleepmedic.co" target="_blank" rel="noopener">Sleepmedic.co</a></p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="wrap">
+    <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
+  </footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
+
+END FILE:projects.html
+
+BEGIN FILE:terms.html
+
+<!doctype html>
+<html lang="en"><head>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="dark"/><title>Terms — TMTL</title>
+<link rel="stylesheet" href="css/styles.css"/></head>
+<body>
+<header><div class="wrap header-inner"><a class="brand" href="index.html">TMTL</a><nav>
+<a href="projects.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+</nav></div></header>
+<main class="wrap">
+  <h1>Terms</h1>
+  <p class="lede">Plain language. We aim to be fair.</p>
+  <p>Using our sites or apps means you agree not to abuse the service or other users. Content is provided “as is.” We may update features and policies over time. If you have concerns, reach us at <a href="mailto:nathaniel@teachmetolive.com">nathaniel@teachmetolive.com</a>.</p>
+</main>
+<footer class="wrap"><small>© <span id="y"></span> Teach Me To Live LLC</small></footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body></html>
+
+END FILE:terms.html
+
