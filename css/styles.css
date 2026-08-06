@@ -25,8 +25,12 @@ header{
   z-index:1000; /* keep header above page content */
 }
 .header-inner{display:flex; align-items:center; justify-content:space-between; gap:12px}
-.brand{font-weight:700; letter-spacing:.4px; white-space:nowrap}
-nav{display:flex; gap:18px; flex-wrap:wrap}
+.brand{font-weight:600; white-space:nowrap}
+nav{display:flex; gap:22px; flex-wrap:wrap}
+.brand, nav a{
+  font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
+}
+.brand:hover, nav a:hover, nav a:focus{color:var(--fg); text-decoration:none}
 
 /* Main */
 main{padding:24px 0}
@@ -71,24 +75,37 @@ h3{margin:.2em 0 .4em}
 .logo, h1{animation:rise .75s ease-out both}
 h1{animation-delay:.06s}
 
-/* Quote block (home) */
-.quote-wrap{max-width:70ch; margin:28px auto 0; position:relative}
-#q{opacity:1; transition:opacity 650ms ease}
+/* Reading Room hero — the quote IS the hero */
+.hero--reading{padding:64px 0 8px; overflow:visible}
+.logo--emblem{width:56px; border-radius:12px; margin:0 auto 38px}
+.quote-wrap{max-width:44ch; margin:0 auto; position:relative; min-height:9.5em}
+#q{opacity:1; transition:opacity 950ms ease}
 .quote-wrap.is-fading #q{opacity:0}
 .quote-lg{
-  font-size:clamp(1.05rem, 1.2vw + .65rem, 1.6rem);
-  line-height:1.35; margin:0 0 .3rem; font-weight:600;
+  font-family:"Iowan Old Style",Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif;
+  font-style:italic; font-weight:500;
+  font-size:clamp(1.5rem, 3.2vw + .6rem, 2.35rem);
+  line-height:1.32; margin:0; text-wrap:balance;
 }
-.quote-attr{color:var(--muted); margin:.2rem 0 0}
-.quote-progress{
-  height:2px; width:100%; background:var(--line); overflow:hidden; border-radius:2px; margin-top:10px;
+.quote-lg.long{font-size:clamp(1.1rem, 1.4vw + .6rem, 1.45rem); line-height:1.45}
+.quote-attr{
+  color:var(--muted); margin-top:26px;
+  font-size:11.5px; letter-spacing:.22em; text-transform:uppercase;
 }
-.progress-bar{
-  height:100%; width:0%;
-  background:linear-gradient(to right, #6a6a6a, #bdbdbd);
-  animation:fill 10s linear forwards;
+.quote-attr::before{
+  content:""; display:block; width:34px; height:1px; background:#3a3a36; margin:0 auto 16px;
 }
-@keyframes fill{from{width:0%} to{width:100%}}
+
+/* Tagline + copyright row under the hero */
+.footline{
+  margin-top:88px; padding-top:22px; border-top:1px solid var(--line);
+  font-size:13px; color:var(--muted);
+  display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap;
+  text-align:left;
+}
+.footline b{color:var(--fg); font-weight:600}
+.footline a{color:var(--fg)}
+.footline small a{color:var(--muted)}
 
 /* Cards / Figures */
 .grid{display:grid; gap:18px}
@@ -151,4 +168,10 @@ button[type=submit]{cursor:pointer}
 @media (max-width:640px){
   .wrap{padding:18px}
   nav{gap:14px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .hero::before{animation:none}
+  .logo, h1{animation:none}
+  #q{transition:none}
 }

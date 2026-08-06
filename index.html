@@ -11,11 +11,6 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
 
   <meta name="theme-color" content="#000000" />
-  <!-- Slightly smaller quote text -->
-  <style>
-    .quote-lg   { font-size: 0.92em; line-height: 1.35; }
-    .quote-attr { font-size: 0.85em; }
-  </style>
 </head>
 <body>
   <header>
@@ -30,26 +25,22 @@
   </header>
 
   <main class="wrap center">
-    <section class="hero">
-      <img class="logo logo--big" src="assets/logo.png" alt="Teach Me to Live emblem" />
-      <h1>Tools for Learning</h1>
-    </section>
-
-    <!-- Rotating quote -->
-    <section class="quote-wrap" aria-live="polite" id="qw">
-      <div id="q">
-        <div id="qtext" class="quote-lg">“The unexamined life is not worth living.”</div>
-        <div id="qattr" class="quote-attr">— Socrates</div>
+    <!-- The quote IS the hero (Reading Room) -->
+    <section class="hero hero--reading">
+      <img class="logo logo--emblem" src="assets/logo.png" alt="Teach Me to Live emblem" />
+      <div class="quote-wrap" aria-live="polite" id="qw">
+        <div id="q">
+          <blockquote id="qtext" class="quote-lg">“The unexamined life is not worth living.”</blockquote>
+          <div id="qattr" class="quote-attr">Socrates</div>
+        </div>
       </div>
-      <div class="quote-progress"><div id="qbar" class="progress-bar"></div></div>
     </section>
 
-    <hr class="sep" />
+    <div class="footline">
+      <span><b>Tools for learning.</b> Makers of <a href="https://protoquiz.com">ProtoQuiz&trade;</a>.</span>
+      <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
+    </div>
   </main>
-
-  <footer class="wrap">
-    <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
-  </footer>
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
@@ -132,20 +123,12 @@
     const qw   = document.getElementById('qw');
     const qtext= document.getElementById('qtext');
     const qattr= document.getElementById('qattr');
-    const bar  = document.getElementById('qbar');
 
     let idx = 0, timer = null;
 
-    function restartBar(dur){
-      bar.style.animation = 'none'; void bar.offsetWidth;
-      bar.style.animation = `fill ${dur}s linear forwards`;
-    }
-
     function scheduleNext(){
-      const dur = durationFor(sequence[idx]);
-      restartBar(dur);
       clearTimeout(timer);
-      timer = setTimeout(() => setQuote(idx + 1), dur * 1000);
+      timer = setTimeout(() => setQuote(idx + 1), durationFor(sequence[idx]) * 1000);
     }
 
     function setQuote(i){
@@ -154,10 +137,11 @@
       setTimeout(() => {
         const { text, attr } = sequence[idx];
         qtext.innerHTML = text;
-        qattr.innerHTML = attr;
+        qtext.classList.toggle('long', plainLen(text) > 260);
+        qattr.innerHTML = attr.replace(/^—\s*/, '');
         qw.classList.remove('is-fading');
         scheduleNext();
-      }, 325); // mid-fade swap
+      }, 480); // mid-fade swap
     }
 
     // init
