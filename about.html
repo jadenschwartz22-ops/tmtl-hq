@@ -69,25 +69,26 @@
     </article>
   </section>
 
-  <!-- 01 · Bleed. The emblem is white-on-black artwork, so it carries no
-       container; a radial mask dissolves its edge into the page. -->
+  <!-- Mark, small and inline beside the line. logo-mark.png is a true
+       transparent PNG; the old logo.png was a JPEG despite its extension,
+       so it carried an opaque black square Safari would not mask away. -->
   <div class="bleed reveal" style="--d:.16s">
-    <img src="assets/logo.png" alt="" width="1024" height="1024" loading="lazy" />
+    <img src="assets/logo-mark-256.png" alt="" width="256" height="254" loading="lazy" />
     <p>We learn more from each other than we can by ourselves.</p>
   </div>
 
-  <!-- 03 · Band, breaking out of .wrap via negative margins to reach both
-       screen edges while staying inside the single <main>.
-       05 · .rv resolves it from blur as it scrolls into view.
-       There is only one strong photograph in the library, so it is used
-       once, at full strength, rather than repeated down the page. -->
-  <section class="band rv">
-    <img src="assets/plato-lg.jpg"
-         srcset="assets/plato-md.jpg 900w, assets/plato-lg.jpg 1400w, assets/plato-xl.jpg 1800w"
-         sizes="100vw"
-         alt="Marble statue of Plato seated, with the Academy of Athens behind"
-         loading="lazy" />
-    <div class="over">
+  <!-- Photo beside the quote rather than under it, so type is never centred
+       over an off-centre subject. Source is baked greyscale, because Safari
+       silently drops the grayscale() filter. -->
+  <section class="split reveal" style="--d:.22s">
+    <div class="im">
+      <img src="assets/plato-bw-lg.jpg"
+           srcset="assets/plato-bw-md.jpg 900w, assets/plato-bw-lg.jpg 1200w"
+           sizes="(max-width:760px) 100vw, 50vw"
+           alt="Marble statue of Plato seated, with the Academy of Athens behind"
+           loading="lazy" />
+    </div>
+    <div class="tx">
       <blockquote>The unexamined life is not worth living.</blockquote>
       <div class="who">Socrates</div>
     </div>

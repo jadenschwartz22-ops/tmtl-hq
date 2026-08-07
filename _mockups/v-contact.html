@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="dark"/>
+<title>Contact &amp; Projects — variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:oklch(4.5% .004 260);--line:oklch(19% .006 260);--line-2:oklch(14% .005 260);
+  --fg:oklch(94% .005 90);--muted:oklch(54% .008 260);--faint:oklch(34% .007 260);
+  --serif:"Spectral",Palatino,Georgia,serif;--sans:"Archivo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{margin:0;background:var(--ink);color:var(--fg);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{width:min(1080px,100%);margin:0 auto;padding:0 clamp(22px,5vw,48px)}
+.tag{position:sticky;top:0;z-index:9;background:linear-gradient(var(--ink) 70%,transparent);
+  padding:22px 0 14px;font:500 10px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+.tag b{color:var(--fg);font-weight:600;letter-spacing:.14em}
+.tag i{font-style:normal;color:var(--muted);text-transform:none;letter-spacing:0;font-size:12.5px;margin-left:10px}
+.opt{border-top:1px solid var(--line-2);padding-bottom:clamp(40px,7vh,80px)}
+.eyebrow{margin:0 0 18px;font:500 10px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+.statement{margin:0;font:300 clamp(1.7rem,1.1rem + 2.3vw,2.6rem)/1.26 var(--serif);letter-spacing:-.014em;text-wrap:balance;max-width:min(calc(22ch + 18vw),46ch)}
+
+/* form bits */
+.form{max-width:34rem;margin-top:clamp(30px,5vh,48px);display:grid;gap:18px}
+.field{display:grid;gap:8px}
+.field label{font:500 10px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--faint)}
+.field input,.field textarea{width:100%;background:transparent;color:var(--fg);border:0;border-bottom:1px solid var(--line);
+  border-radius:0;padding:9px 0;font:400 16px/1.6 var(--sans);transition:border-color .45s}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:0;border-bottom-color:var(--fg)}
+.send{justify-self:start;margin-top:6px;cursor:pointer;background:transparent;color:var(--fg);
+  border:1px solid var(--line);border-radius:999px;padding:12px 26px;font:500 10px/1 var(--sans);
+  letter-spacing:.22em;text-transform:uppercase;transition:border-color .4s,background .4s}
+.send:hover{border-color:var(--muted);background:oklch(100% 0 0/.022)}
+.aside{margin-top:28px;color:var(--muted);font-size:14.5px}
+.aside a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line)}
+
+/* C2: two column, address rail */
+.c2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,15rem);gap:clamp(28px,6vw,64px);
+  margin-top:clamp(30px,5vh,48px);align-items:start}
+@media(max-width:760px){.c2{grid-template-columns:1fr}}
+.rail dt{font:500 10px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+.rail dd{margin:0 0 22px;color:var(--muted);font-size:14.5px;line-height:1.6}
+.rail a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line)}
+.c2 .form{margin-top:0}
+
+/* C3: email-first, form secondary */
+.big-mail{margin-top:clamp(26px,4vh,40px)}
+.big-mail a{font:300 clamp(1.3rem,1rem + 1.4vw,2rem)/1.3 var(--serif);color:var(--fg);
+  text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:5px;transition:border-color .4s}
+.big-mail a:hover{border-color:var(--muted)}
+details{margin-top:34px;border-top:1px solid var(--line-2);padding-top:20px}
+summary{cursor:pointer;font:500 10px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+ ";color:var(--faint)}
+details[open] summary::before{content:"− "}
+
+/* project rows */
+.rows{margin-top:clamp(40px,7vh,74px);border-top:1px solid var(--line-2)}
+.row{display:grid;gap:clamp(14px,3vw,30px);padding:clamp(20px,3.4vh,30px) 0;
+  border-bottom:1px solid var(--line-2);align-items:center}
+.row h3{margin:0 0 5px;font:500 14px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase}
+.row p{margin:0;color:var(--muted);line-height:1.7;max-width:56ch}
+.go{font:500 10px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  text-decoration:none;white-space:nowrap;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.mk{width:56px;height:56px;border-radius:12px;overflow:hidden;display:grid;place-items:center;
+  box-shadow:inset 0 0 0 1px oklch(100% 0 0/.07)}
+.mk img{width:100%;height:100%;object-fit:contain;display:block}
+
+/* P1 icon + text + link */
+.p1 .row{grid-template-columns:56px minmax(0,52ch) auto;justify-content:start}
+@media(max-width:700px){.p1 .row{grid-template-columns:44px minmax(0,1fr)}.p1 .go{grid-column:2;justify-self:start}}
+/* P2 no icons, numbered */
+.p2 .row{grid-template-columns:3rem minmax(0,52ch) auto;justify-content:start}
+.rn{font:500 10px/1.9 var(--sans);letter-spacing:.2em;color:var(--faint)}
+@media(max-width:700px){.p2 .row{grid-template-columns:2.4rem minmax(0,1fr)}.p2 .go{grid-column:2;justify-self:start}}
+/* P3 name-led, icon right */
+.p3 .row{grid-template-columns:minmax(0,1fr) 44px;justify-content:start}
+.p3 .mk{width:44px;height:44px}
+</style>
+</head>
+<body>
+
+<div class="wrap"><div class="tag"><b>Contact</b> — three layouts <i>the "Say hello, send feedback…" line is gone from all three</i></div></div>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Contact 1 — form only, no subtitle</p>
+  <h1 class="statement">Contact</h1>
+  <form class="form" onsubmit="return false">
+    <div class="field"><label>Name</label><input type="text"></div>
+    <div class="field"><label>Email</label><input type="email"></div>
+    <div class="field"><label>Message</label><textarea></textarea></div>
+    <button class="send">Send</button>
+  </form>
+  <p class="aside">Prefer email? <a href="#">nathaniel@teachmetolive.com</a></p>
+</div></section>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Contact 2 — form with a detail rail</p>
+  <h1 class="statement">Contact</h1>
+  <div class="c2">
+    <form class="form" onsubmit="return false">
+      <div class="field"><label>Name</label><input type="text"></div>
+      <div class="field"><label>Email</label><input type="email"></div>
+      <div class="field"><label>Message</label><textarea></textarea></div>
+      <button class="send">Send</button>
+    </form>
+    <dl class="rail">
+      <dt>Email</dt><dd><a href="#">nathaniel@teachmetolive.com</a></dd>
+      <dt>Company</dt><dd>Teach Me To Live LLC<br>Colorado</dd>
+      <dt>Reply time</dt><dd>Usually within a day.</dd>
+    </dl>
+  </div>
+</div></section>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Contact 3 — email first, form tucked away</p>
+  <h1 class="statement">Contact</h1>
+  <div class="big-mail"><a href="#">nathaniel@teachmetolive.com</a></div>
+  <details>
+    <summary>Use a form instead</summary>
+    <form class="form" onsubmit="return false">
+      <div class="field"><label>Name</label><input type="text"></div>
+      <div class="field"><label>Email</label><input type="email"></div>
+      <div class="field"><label>Message</label><textarea></textarea></div>
+      <button class="send">Send</button>
+    </form>
+  </details>
+</div></section>
+
+<div class="wrap"><div class="tag"><b>Projects</b> — three row styles</div></div>
+
+<section class="opt p1"><div class="wrap">
+  <p class="eyebrow">Projects 1 — icon, copy, destination (current, tightened)</p>
+  <div class="rows">
+    <article class="row"><span class="mk"><img src="../assets/protoquiz-sm.png" alt=""></span>
+      <div><h3>EMS ProtoQuiz</h3><p>Training built from your agency's own protocols.</p></div>
+      <a class="go" href="#">protoquiz.com</a></article>
+    <article class="row"><span class="mk"><img src="../assets/logo-mark-256.png" alt=""></span>
+      <div><h3>Teach Me To Live</h3><p>Share wisdom anonymously. Everything disappears monthly.</p></div>
+      <a class="go" href="#">App Store</a></article>
+    <article class="row"><span class="mk"><img src="../assets/sleepmedic-sm.jpg" alt=""></span>
+      <div><h3>SleepMedic</h3><p>Sleep education written for people who work nights.</p></div>
+      <a class="go" href="#">sleepmedic.co</a></article>
+  </div>
+</div></section>
+
+<section class="opt p2"><div class="wrap">
+  <p class="eyebrow">Projects 2 — numbered, no icons</p>
+  <div class="rows">
+    <article class="row"><span class="rn">01</span>
+      <div><h3>EMS ProtoQuiz</h3><p>Training built from your agency's own protocols.</p></div>
+      <a class="go" href="#">protoquiz.com</a></article>
+    <article class="row"><span class="rn">02</span>
+      <div><h3>Teach Me To Live</h3><p>Share wisdom anonymously. Everything disappears monthly.</p></div>
+      <a class="go" href="#">App Store</a></article>
+    <article class="row"><span class="rn">03</span>
+      <div><h3>SleepMedic</h3><p>Sleep education written for people who work nights.</p></div>
+      <a class="go" href="#">sleepmedic.co</a></article>
+  </div>
+</div></section>
+
+<section class="opt p3"><div class="wrap">
+  <p class="eyebrow">Projects 3 — name-led, small icon on the right</p>
+  <div class="rows">
+    <article class="row">
+      <div><h3>EMS ProtoQuiz</h3><p>Training built from your agency's own protocols. <a class="go" style="border:0;text-transform:none;letter-spacing:.04em;font-size:12px" href="#">protoquiz.com &rarr;</a></p></div>
+      <span class="mk"><img src="../assets/protoquiz-sm.png" alt=""></span></article>
+    <article class="row">
+      <div><h3>Teach Me To Live</h3><p>Share wisdom anonymously. <a class="go" style="border:0;text-transform:none;letter-spacing:.04em;font-size:12px" href="#">App Store &rarr;</a></p></div>
+      <span class="mk"><img src="../assets/logo-mark-256.png" alt=""></span></article>
+    <article class="row">
+      <div><h3>SleepMedic</h3><p>Sleep education for people who work nights. <a class="go" style="border:0;text-transform:none;letter-spacing:.04em;font-size:12px" href="#">sleepmedic.co &rarr;</a></p></div>
+      <span class="mk"><img src="../assets/sleepmedic-sm.jpg" alt=""></span></article>
+  </div>
+</div></section>
+
+</body>
+</html>

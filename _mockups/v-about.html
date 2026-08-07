@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="dark"/>
+<title>About — variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:oklch(4.5% .004 260);--line:oklch(19% .006 260);--line-2:oklch(14% .005 260);
+  --fg:oklch(94% .005 90);--muted:oklch(54% .008 260);--faint:oklch(34% .007 260);
+  --serif:"Spectral",Palatino,Georgia,serif;--sans:"Archivo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{margin:0;background:var(--ink);color:var(--fg);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{width:min(1080px,100%);margin:0 auto;padding:0 clamp(22px,5vw,48px)}
+.tag{position:sticky;top:0;z-index:9;background:linear-gradient(var(--ink) 70%,transparent);
+  padding:22px 0 14px;font:500 10px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+.tag b{color:var(--fg);font-weight:600;letter-spacing:.14em}
+.tag i{font-style:normal;color:var(--muted);text-transform:none;letter-spacing:0;font-size:12.5px;margin-left:10px}
+.opt{border-top:1px solid var(--line-2);padding-bottom:clamp(40px,7vh,80px)}
+
+/* shared page bits */
+.pagehead{max-width:min(calc(22ch + 18vw),46ch)}
+.eyebrow{margin:0 0 18px;font:500 10px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+.statement{margin:0;font:300 clamp(1.7rem,1.1rem + 2.3vw,2.6rem)/1.26 var(--serif);letter-spacing:-.014em;text-wrap:balance}
+.lede{margin:22px 0 0;max-width:56ch;color:var(--muted);font-size:15.5px;line-height:1.7}
+.rows{margin-top:clamp(44px,7vh,78px);border-top:1px solid var(--line-2)}
+.row{display:grid;grid-template-columns:3.5rem minmax(0,1fr);gap:clamp(14px,3vw,30px);
+  padding:clamp(20px,3.4vh,30px) 0;border-bottom:1px solid var(--line-2);align-items:start}
+.rn{font:500 10px/1.9 var(--sans);letter-spacing:.2em;color:var(--faint);font-variant-numeric:tabular-nums}
+.rb h2{margin:0 0 7px;font:500 13px/1.4 var(--sans);letter-spacing:.13em;text-transform:uppercase}
+.rb p{margin:0;color:var(--muted);max-width:62ch;line-height:1.7}
+
+/* ---------- A: mark small, inline with the line ---------- */
+.a-mark{display:flex;align-items:center;gap:clamp(20px,4vw,44px);margin-top:clamp(44px,7vh,80px)}
+.a-mark img{width:clamp(84px,11vw,128px);height:auto;display:block;flex:none;opacity:.92}
+.a-mark p{margin:0;font:300 italic clamp(1.2rem,.95rem + 1.1vw,1.65rem)/1.4 var(--serif);text-wrap:balance}
+@media(max-width:620px){.a-mark{flex-direction:column;align-items:flex-start;gap:20px}}
+
+/* ---------- B: mark as a quiet centered rule-break ---------- */
+.b-mark{margin:clamp(46px,7.5vh,84px) 0 0;text-align:center}
+.b-mark img{width:clamp(64px,8vw,92px);height:auto;display:inline-block;opacity:.85}
+.b-mark p{margin:22px auto 0;max-width:34ch;font:300 italic clamp(1.15rem,.95rem + .9vw,1.5rem)/1.45 var(--serif)}
+
+/* ---------- C: no mark at all, type only ---------- */
+.c-close{margin-top:clamp(46px,7.5vh,84px);padding-top:26px;border-top:1px solid var(--line-2);
+  max-width:44ch}
+.c-close p{margin:0;font:300 italic clamp(1.2rem,.95rem + 1.1vw,1.7rem)/1.4 var(--serif);text-wrap:balance}
+
+/* ---------- BANDS ---------- */
+.band{position:relative;overflow:hidden;display:grid;place-items:center;
+  width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.band .over{position:relative;z-index:2;text-align:center;max-width:38ch;padding:0 24px}
+.band blockquote{margin:0;font:300 italic clamp(1.4rem,1rem + 1.8vw,2.3rem)/1.32 var(--serif);letter-spacing:-.013em;text-wrap:balance}
+.band .who{margin-top:20px;font:500 10px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+
+/* band 1: short, heavy dim, centered */
+.band--short{min-height:min(46vh,360px);margin-top:clamp(44px,7vh,80px)}
+.band--short img{filter:grayscale(100%) contrast(112%) brightness(.34)}
+.band--short::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(90% 70% at 50% 50%,transparent 25%,oklch(4.5% .004 260/.8) 80%),
+             linear-gradient(var(--ink),transparent 30%,transparent 70%,var(--ink))}
+
+/* band 2: image left, quote right, no overlap */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;
+  margin-top:clamp(44px,7vh,80px);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+@media(max-width:760px){.split{grid-template-columns:1fr}}
+.split .im{position:relative;min-height:300px;overflow:hidden}
+.split .im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(100%) contrast(110%) brightness(.5)}
+.split .im::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,var(--ink))}
+@media(max-width:760px){.split .im::after{background:linear-gradient(transparent 55%,var(--ink))}}
+.split .tx{display:grid;align-content:center;padding:clamp(28px,5vw,54px)}
+.split blockquote{margin:0;font:300 italic clamp(1.25rem,.95rem + 1.3vw,1.85rem)/1.36 var(--serif);text-wrap:balance}
+.split .who{margin-top:18px;font:500 10px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+
+/* band 3: contained plate, quote below */
+.plate{margin-top:clamp(44px,7vh,80px);position:relative;overflow:hidden;border-radius:2px}
+.plate img{width:100%;height:auto;display:block;aspect-ratio:21/9;object-fit:cover;
+  filter:grayscale(100%) contrast(110%) brightness(.52)}
+.plate::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,oklch(4.5% .004 260/.85))}
+.pq{margin:22px 0 0;max-width:40ch;font:300 italic clamp(1.15rem,.95rem + .9vw,1.5rem)/1.45 var(--serif)}
+.pq .who{margin-top:14px;font:500 10px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-style:normal}
+</style>
+</head>
+<body>
+
+<!-- ============ MARK OPTIONS ============ -->
+<div class="wrap">
+  <div class="tag"><b>Mark</b> — three sizes / placements <i>the old one was 400px and had a black box (the file was a JPEG, so it could not be transparent). Now a true transparent PNG.</i></div>
+</div>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Mark A</p>
+  <div class="a-mark">
+    <img src="../assets/logo-mark-256.png" alt="">
+    <p>We learn more from each other than we can by ourselves.</p>
+  </div>
+</div></section>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Mark B</p>
+  <div class="b-mark">
+    <img src="../assets/logo-mark-256.png" alt="">
+    <p>We learn more from each other than we can by ourselves.</p>
+  </div>
+</div></section>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Mark C — no mark, type only</p>
+  <div class="c-close"><p>We learn more from each other than we can by ourselves.</p></div>
+</div></section>
+
+<!-- ============ IMAGE OPTIONS ============ -->
+<div class="wrap">
+  <div class="tag"><b>Photo</b> — three treatments <i>the full-color band was Safari ignoring the filter; all three below are baked to greyscale so they cannot revert</i></div>
+</div>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Photo 1 — short band, quote centered on it</p>
+</div>
+  <div class="band band--short">
+    <img src="../assets/plato-bw.jpg" alt="">
+    <div class="over">
+      <blockquote>The unexamined life is not worth living.</blockquote>
+      <div class="who">Socrates</div>
+    </div>
+  </div>
+</section>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Photo 2 — image and quote side by side</p>
+  <div class="split">
+    <div class="im"><img src="../assets/plato-bw.jpg" alt=""></div>
+    <div class="tx">
+      <blockquote>The unexamined life is not worth living.</blockquote>
+      <div class="who">Socrates</div>
+    </div>
+  </div>
+</div></section>
+
+<section class="opt"><div class="wrap">
+  <p class="eyebrow">Photo 3 — contained plate, quote beneath</p>
+  <figure class="plate" style="margin-bottom:0">
+    <img src="../assets/plato-bw.jpg" alt="Marble statue of Plato, Academy of Athens">
+  </figure>
+  <p class="pq">The unexamined life is not worth living.<span class="who" style="display:block">Socrates</span></p>
+</div></section>
+
+</body>
+</html>

@@ -86,28 +86,31 @@ main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
   letter-spacing:.13em; text-transform:uppercase; color:var(--fg);
 }
 .rbody p{margin:0; color:var(--muted); max-width:62ch; line-height:1.7}
+/* Keep the destination on the same line as the sentence when it fits. */
+.row--proj .rbody p{max-width:72ch}
 .rbody p + p{margin-top:9px}
 /* Hover lifts the whole row a hair. No border-color tricks, no translate on cards. */
 .row{transition:background .5s ease}
 .row:hover{background:oklch(100% 0 0 / .012)}
 
 /* ---------- Project rows: same skeleton, plus mark and link ---------- */
-/* Cap the text column so the destination link sits near the copy instead of
-   being flung to the far edge on wide screens. */
-.row--proj{grid-template-columns:76px minmax(0,58ch) auto; align-items:center; justify-content:start; column-gap:clamp(16px,3vw,34px)}
-@media (max-width:700px){
-  /* minmax(0,1fr) rather than the 58ch cap, or the text column refuses to
-     shrink below its content and pushes the row off-screen. */
-  .row--proj{grid-template-columns:56px minmax(0,1fr); row-gap:14px}
-  .row--proj .go{grid-column:2; justify-self:start}
+/* Projects 3: the name leads, the mark sits small on the right. The
+   destination link rides inside the copy rather than as a far-right column. */
+.row--proj{
+  grid-template-columns:minmax(0,1fr) 44px; align-items:center;
+  column-gap:clamp(16px,3vw,34px);
 }
+.row--proj p .go{
+  border:0; text-transform:none; letter-spacing:.02em; font-size:12.5px;
+  color:var(--muted); white-space:nowrap; margin-left:6px;
+}
+.row--proj:hover p .go{color:var(--fg)}
 /* 04 · Marks with no box. The artwork sits directly on the page ground;
    the border and fill were only adding edges. Scales gently on hover. */
 .mark{
-  width:76px; height:76px; border-radius:14px; overflow:hidden;
+  width:44px; height:44px; border-radius:10px; overflow:hidden;
   display:grid; place-items:center;
 }
-@media (max-width:700px){.mark{width:56px;height:56px}}
 /* These are opaque app icons with their own artwork backgrounds, so they
    cannot dissolve the way the white-on-black emblem does. A hairline inset
    ring reads as a deliberate edge rather than a leftover container. */
@@ -125,24 +128,21 @@ main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
 }
 .row--proj:hover .go{color:var(--fg); border-color:var(--muted)}
 
-/* ---------- 01 · Bleed: artwork with no container ----------
-   The emblem is white-on-black artwork, so it needs no box. A radial mask
-   eats the square edge and it dissolves into the page ground. */
+/* ---------- 01 · Mark, inline beside the line ----------
+   Uses logo-mark.png: a real transparent PNG. The old logo.png was a JPEG
+   with a .png extension, so it carried an opaque black square that no CSS
+   mask could reliably remove (Safari ignored the mask entirely). */
 .bleed{
-  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:clamp(24px,5vw,60px); align-items:center;
-  margin-top:clamp(48px,8vh,86px);
+  display:flex; align-items:center; gap:clamp(20px,4vw,44px);
+  margin-top:clamp(46px,7.5vh,84px);
 }
-@media (max-width:760px){.bleed{grid-template-columns:1fr; gap:28px}}
+@media (max-width:620px){.bleed{flex-direction:column; align-items:flex-start; gap:20px}}
 .bleed img{
-  width:100%; max-width:400px; height:auto; display:block; justify-self:center;
-  -webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent 92%);
-          mask-image:radial-gradient(closest-side,#000 55%,transparent 92%);
-  opacity:.95;
+  width:clamp(96px,13vw,150px); height:auto; display:block; flex:none; opacity:.92;
 }
 .bleed p{
   margin:0; text-wrap:balance; letter-spacing:-.01em;
-  font:300 italic clamp(1.35rem,.98rem + 1.5vw,1.95rem)/1.36 var(--serif);
+  font:300 italic clamp(1.2rem,.95rem + 1.1vw,1.65rem)/1.4 var(--serif);
 }
 
 /* ---------- 02 · Plate: photograph pulled into the palette ----------
@@ -165,39 +165,43 @@ main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
   font:500 10px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase; color:var(--muted);
 }
 
-/* ---------- 03 · Band: full-bleed image with type over it ---------- */
-.band{
-  position:relative; overflow:hidden;
-  min-height:min(74vh,560px); display:grid; place-items:center;
-  /* Break out of the padded .wrap to reach both screen edges.
-     --sbw is the scrollbar width, measured once in JS; subtracting it keeps
-     the band flush with the viewport instead of running under the scrollbar.
-     It defaults to 0, so the layout is correct before the script runs. */
-  width:calc(100vw - var(--sbw,0px)); max-width:calc(100vw - var(--sbw,0px));
-  margin-left:calc(50% - (100vw - var(--sbw,0px)) / 2);
-  margin-right:calc(50% - (100vw - var(--sbw,0px)) / 2);
-  margin-top:clamp(52px,9vh,96px); margin-bottom:clamp(52px,9vh,96px);
-}
-/* A horizontal scrollbar from the 100vw breakout is the classic failure
-   mode of this pattern; forbid it at the root. */
+/* ---------- 03 · Split: image beside the quote ----------
+   Type never sits on top of the photograph, so nothing can read as
+   off-centre and the quote stays legible regardless of what is behind it. */
 html,body{overflow-x:hidden}
-.band img{
+.split{
+  display:grid; grid-template-columns:1fr 1fr; align-items:stretch;
+  margin-top:clamp(46px,7.5vh,84px);
+  border-top:1px solid var(--line-2); border-bottom:1px solid var(--line-2);
+}
+@media (max-width:760px){.split{grid-template-columns:1fr}}
+.split .im{position:relative; min-height:clamp(300px,36vh,420px); overflow:hidden}
+.split .im img{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  filter:grayscale(100%) contrast(115%) brightness(.42);
+  /* The source file is already greyscale; the filter only trims brightness.
+     Safari silently drops grayscale() here, so it is baked into the asset. */
+  filter:brightness(.92);
 }
-.band::after{
+/* Dissolve the inner edge so the photo meets the text without a hard seam. */
+.split .im::after{
   content:""; position:absolute; inset:0;
-  background:
-    radial-gradient(100% 70% at 50% 45%, transparent 20%, oklch(4.5% .004 260 / .82) 78%),
-    linear-gradient(var(--ink), transparent 24%, transparent 74%, var(--ink));
+  background:linear-gradient(90deg, transparent 58%, var(--ink));
 }
-.band .over{position:relative; z-index:2; text-align:center; max-width:38ch; padding:0 24px}
-.band blockquote{
-  margin:0; text-wrap:balance; letter-spacing:-.013em;
-  font:300 italic clamp(1.45rem,1rem + 1.9vw,2.4rem)/1.32 var(--serif);
+@media (max-width:760px){
+  .split .im::after{background:linear-gradient(transparent 52%, var(--ink))}
 }
-.band .who{
-  margin-top:22px; font:500 10px/1 var(--sans);
+/* Constrain the text block so the quote sits near the image instead of
+   drifting to the far right and leaving a hole in the middle. */
+.split .tx{
+  display:grid; align-content:center; justify-items:start;
+  padding:clamp(28px,5vw,54px); max-width:44ch;
+}
+.split blockquote{
+  margin:0; text-wrap:balance; letter-spacing:-.01em;
+  font:300 italic clamp(1.25rem,.95rem + 1.3vw,1.85rem)/1.36 var(--serif);
+}
+.split .who{
+  margin-top:18px; font:500 10px/1 var(--sans);
   letter-spacing:.24em; text-transform:uppercase; color:var(--muted);
 }
 

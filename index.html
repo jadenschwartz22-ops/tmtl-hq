@@ -17,12 +17,10 @@
     /* Homepage only: the quote is centered and is the whole page.
        Inner pages are left-aligned; that difference is intentional. */
     main.reading{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,7vh,80px) 0}
-    /* Masked so the mark's square edge dissolves into the ground, matching
-       the bleed treatment used on the inner pages. */
+    /* True transparent PNG, so no mask is needed. Safari ignores mask-image
+       on <img>, which is why the previous version showed a black square. */
     .emblem{
-      width:46px; height:46px; display:block; margin:0 auto clamp(44px,8vh,72px); opacity:.85;
-      -webkit-mask-image:radial-gradient(closest-side,#000 60%,transparent 95%);
-              mask-image:radial-gradient(closest-side,#000 60%,transparent 95%);
+      width:46px; height:auto; display:block; margin:0 auto clamp(44px,8vh,72px); opacity:.85;
     }
     .quote-wrap{max-width:43ch; margin:0 auto; text-align:center}
     blockquote{
@@ -63,7 +61,7 @@
   </header>
 
   <main class="reading wrap">
-    <img class="emblem" src="assets/logo-sm.png" alt="" />
+    <img class="emblem" src="assets/logo-mark-128.png" alt="" width="128" height="127" />
     <div class="quote-wrap" aria-live="polite">
       <blockquote id="qtext"></blockquote>
       <div class="attr" id="qattr">Socrates</div>
