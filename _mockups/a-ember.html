@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>A · Ember — Teach Me to Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=Sora:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   VARIANT A — "Ember"
+   Same architecture as today. Every value re-decided.
+   Ground is warm-black, not #000. Light falls from above the
+   quote like a reading lamp. Motion is a rise, not a blink.
+   ============================================================ */
+:root{
+  /* Warm-tinted neutrals: every step carries a trace of amber.
+     Pure #000 reads as a switched-off screen; this reads as a dim room. */
+  --ink-0: oklch(13% 0.008 65);    /* page ground        */
+  --ink-1: oklch(17% 0.010 65);    /* raised surface     */
+  --line:  oklch(26% 0.012 65);    /* hairlines          */
+  --fg:    oklch(94% 0.010 75);    /* primary text       */
+  --muted: oklch(63% 0.014 70);    /* chrome, attribution*/
+  --ember: oklch(72% 0.115 55);    /* the single accent  */
+
+  --serif: "Spectral", "Iowan Old Style", Palatino, Georgia, serif;
+  --sans:  "Sora", system-ui, -apple-system, sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; min-height:100svh; color:var(--fg); background:var(--ink-0);
+  font:400 16px/1.65 var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column;
+}
+
+/* --- The lamp. A single warm pool of light above the quote.
+       Replaces three 4%-white gradients that nobody could see. --- */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(80vmin 55vmin at 50% 18%, oklch(72% 0.11 55 / .10), transparent 70%),
+    radial-gradient(120vmin 80vmin at 50% 0%,  oklch(80% 0.06 70 / .05), transparent 70%);
+}
+/* Faint film grain so the black has texture instead of banding. */
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.16;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+.wrap{max-width:1000px; margin:0 auto; padding:0 clamp(20px,5vw,40px); position:relative; z-index:1}
+
+/* --- Chrome. Recedes until you look for it. --- */
+header{padding:26px 0}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:16px}
+.brand,nav a{
+  font:500 10.5px/1 var(--sans); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted); text-decoration:none; transition:color .35s;
+}
+nav{display:flex; gap:clamp(16px,3vw,28px)}
+.brand:hover,nav a:hover{color:var(--fg)}
+/* Underline grows from the left rather than appearing all at once. */
+nav a{position:relative; padding-bottom:3px}
+nav a::after{
+  content:""; position:absolute; left:0; bottom:0; height:1px; width:100%;
+  background:var(--ember); transform:scaleX(0); transform-origin:left;
+  transition:transform .45s cubic-bezier(.22,1,.36,1);
+}
+nav a:hover::after{transform:scaleX(1)}
+
+main{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(24px,6vh,64px) 0}
+
+/* --- Emblem. Sits in its own pool of light. --- */
+.emblem{
+  width:48px; height:48px; border-radius:11px; display:block; margin:0 auto clamp(36px,7vh,60px);
+  filter:drop-shadow(0 0 26px oklch(72% 0.11 55 / .28));
+}
+
+/* --- The quote. The whole point of the page. --- */
+.quote-wrap{
+  max-width:46ch; margin:0 auto; text-align:center;
+  /* No min-height. Height animates instead of reserving dead space. */
+}
+blockquote{
+  font:300 italic clamp(1.6rem, 1.1rem + 2.2vw, 2.6rem)/1.34 var(--serif);
+  margin:0; text-wrap:balance; letter-spacing:-.005em;
+  /* Light-on-dark needs the extra leading; serif italic at this size needs
+     the negative tracking to stop it feeling loose. */
+}
+blockquote.long{font-size:clamp(1.15rem,.95rem + 1vw,1.5rem); line-height:1.5}
+
+/* Opening quotation mark set as a real typographic ornament, hung outside
+   the measure so the first line still aligns optically. */
+blockquote::before{
+  content:"\201C"; position:absolute; margin-left:-.62em; color:var(--ember);
+  opacity:.5; font-size:1.1em; line-height:1;
+}
+@media (max-width:600px){ blockquote::before{display:none} }
+
+.attr{
+  margin-top:clamp(24px,4vh,34px);
+  font:500 10.5px/1 var(--sans); letter-spacing:.22em; text-transform:uppercase; color:var(--muted);
+}
+.attr em{font-style:normal; color:var(--fg); opacity:.75}
+/* Rule that draws itself, tinted to the ember. */
+.attr::before{
+  content:""; display:block; width:32px; height:1px; margin:0 auto 15px;
+  background:linear-gradient(90deg,transparent,var(--ember),transparent); opacity:.65;
+}
+
+/* --- Motion: words rise as a group, then settle. Not a crossfade. --- */
+#q{ transition:opacity .62s cubic-bezier(.4,0,.2,1), transform .62s cubic-bezier(.4,0,.2,1); }
+.is-out #q{ opacity:0; transform:translateY(-10px); filter:blur(2px); }
+.is-in  #q{ opacity:0; transform:translateY(12px);  filter:blur(2px); }
+
+/* --- Progress: a hairline that fills over the quote's dwell time, so the
+       rotation feels intentional rather than like a page glitching. --- */
+.meter{width:52px; height:1px; margin:clamp(38px,6vh,56px) auto 0; background:var(--line); overflow:hidden}
+.meter i{display:block; height:100%; width:100%; background:var(--ember); transform-origin:left; transform:scaleX(0)}
+.meter i.run{transition:transform linear}
+
+/* --- Footline --- */
+.footline{
+  border-top:1px solid var(--line); padding:20px 0 30px;
+  display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap;
+  font-size:12.5px; color:var(--muted);
+}
+.footline b{color:var(--fg); font-weight:500}
+.footline a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--line); transition:border-color .3s}
+.footline a:hover{border-color:var(--ember)}
+.footline small a{color:var(--muted); border:0}
+.footline small a:hover{color:var(--fg)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important; transition-duration:.01ms!important}
+  .meter{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#">Teach Me to Live</a>
+    <nav><a href="#">About</a><a href="#">Projects</a><a href="#">Contact</a></nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <img class="emblem" src="../assets/logo.png" alt="" />
+    <div class="quote-wrap" id="qw" aria-live="polite">
+      <div id="q">
+        <blockquote id="qtext">The unexamined life is not worth living.</blockquote>
+        <div class="attr" id="qattr">Socrates</div>
+      </div>
+    </div>
+    <div class="meter"><i id="meter"></i></div>
+  </div>
+</main>
+
+<div class="wrap">
+  <div class="footline">
+    <span><b>Tools for learning.</b> Makers of <a href="#">ProtoQuiz™</a>.</span>
+    <small>© 2026 Teach Me To Live LLC · <a href="#">Privacy</a> · <a href="#">Terms</a></small>
+  </div>
+</div>
+
+<script>
+const seq=[
+ {t:"The unexamined life is not worth living.",a:"Socrates"},
+ {t:"Forever is composed of nows.",a:"Emily Dickinson"},
+ {t:"It is not that we have a short time to live, but that we waste a lot of it. Life is long enough, and a sufficiently generous amount has been given to us for the highest achievements if it were all well invested. But when it is wasted in heedless luxury and spent on no good activity, we are forced at last by death’s final constraint to realize that it has passed away before we knew it was passing.",a:"Seneca, <em>On the Shortness of Life</em>"},
+ {t:"Paths are made by walking.",a:"Franz Kafka"},
+ {t:"But how could you live and have no story to tell?",a:"Fyodor Dostoevsky, <em>White Nights</em>"},
+ {t:"Every sorrow suggests a thousand songs, and every song calls a thousand sorrows; and so they are infinite in number, and all the same.",a:"Marilynne Robinson, <em>Housekeeping</em>"}
+];
+const qw=document.getElementById('qw'),qt=document.getElementById('qtext'),
+      qa=document.getElementById('qattr'),meter=document.getElementById('meter');
+let i=0,timer;
+const plain=h=>{const d=document.createElement('div');d.innerHTML=h;return (d.textContent||'').length};
+const dwell=q=>Math.min(9+Math.max(0,(plain(q.t)-140)/26),26);
+
+function runMeter(sec){
+  meter.classList.remove('run'); meter.style.transitionDuration='0s'; meter.style.transform='scaleX(0)';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    meter.classList.add('run'); meter.style.transitionDuration=sec+'s'; meter.style.transform='scaleX(1)';
+  }));
+}
+function show(n){
+  clearTimeout(timer);
+  qw.classList.add('is-out');
+  setTimeout(()=>{
+    i=(n+seq.length)%seq.length; const q=seq[i];
+    qt.innerHTML=q.t; qa.innerHTML=q.a;
+    qt.classList.toggle('long',plain(q.t)>230);
+    // swap to the "entering" state, then release on the next frame so the
+    // rise animates from below rather than snapping into place
+    qw.classList.remove('is-out'); qw.classList.add('is-in');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>qw.classList.remove('is-in')));
+    const d=dwell(q); runMeter(d);
+    timer=setTimeout(()=>show(i+1),d*1000);
+  },620);
+}
+show(0);
+</script>
+</body>
+</html>

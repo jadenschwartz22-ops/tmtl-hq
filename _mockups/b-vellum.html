@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>B · Vellum — Teach Me to Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   VARIANT B — "Vellum"
+   The quote is set MUCH larger and left-aligned against a
+   visible baseline grid. Type carries the entire page; the
+   emblem shrinks to a mark in the corner. Confident, printed,
+   closer to a book's title page than a website.
+   ============================================================ */
+:root{
+  --ink-0: oklch(14% 0.006 250);
+  --line:  oklch(27% 0.010 250);
+  --fg:    oklch(95% 0.006 90);
+  --muted: oklch(60% 0.010 250);
+  --gold:  oklch(80% 0.085 85);
+
+  --serif: "EB Garamond", "Iowan Old Style", Palatino, Georgia, serif;
+  --sans:  "Archivo", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100svh; background:var(--ink-0); color:var(--fg);
+  font:400 16px/1.6 var(--sans); -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column;
+}
+/* A faint ruled grid, like a manuscript page. Visible only at the edge of
+   perception; it gives the type something to sit on. */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+  background:
+    linear-gradient(90deg, oklch(80% 0.085 85 / .05) 1px, transparent 1px) 0 0/ 1px 100%,
+    repeating-linear-gradient(oklch(100% 0 0 / .014) 0 1px, transparent 1px 46px);
+  mask-image:radial-gradient(120vmax 90vmax at 30% 40%, #000 20%, transparent 78%);
+}
+.wrap{width:min(1180px,100%); margin:0 auto; padding:0 clamp(22px,5vw,56px); position:relative; z-index:1}
+
+header{padding:28px 0}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:20px}
+.brandmark{display:flex; align-items:center; gap:11px; text-decoration:none}
+.brandmark img{width:26px; height:26px; border-radius:6px}
+.brandmark span{font:600 11px/1 var(--sans); letter-spacing:.19em; text-transform:uppercase; color:var(--muted); transition:color .3s}
+.brandmark:hover span{color:var(--fg)}
+nav{display:flex; gap:clamp(18px,3vw,30px)}
+nav a{
+  font:500 11px/1 var(--sans); letter-spacing:.19em; text-transform:uppercase;
+  color:var(--muted); text-decoration:none; transition:color .3s;
+}
+nav a:hover{color:var(--gold)}
+
+main{flex:1; display:flex; align-items:center; padding:clamp(30px,8vh,90px) 0}
+
+/* --- Asymmetric: quote occupies a left-weighted column, attribution sits
+       in the margin beside it like a printed sidenote. --- */
+.reading{
+  display:grid; gap:clamp(20px,4vw,54px);
+  grid-template-columns:minmax(0,1fr);
+}
+@media (min-width:900px){
+  .reading{grid-template-columns:minmax(0,15ch) minmax(0,1fr); align-items:start}
+  .side{text-align:right; padding-top:.85rem}   /* optical align to first line */
+}
+.side{position:relative}
+.side .n{
+  font:500 10.5px/1 var(--sans); letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.side .who{
+  margin-top:12px; font:500 italic 1rem/1.4 var(--serif); color:var(--gold);
+}
+.side .src{margin-top:3px; font:400 italic .92rem/1.4 var(--serif); color:var(--muted)}
+@media (max-width:899px){
+  .side{display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; order:2; margin-top:26px}
+  .side .who,.side .src{margin-top:0}
+}
+
+blockquote{
+  margin:0; text-wrap:pretty;
+  font:400 clamp(2rem, 1.1rem + 4.1vw, 4.15rem)/1.16 var(--serif);
+  letter-spacing:-.018em;
+  /* Roman, not italic, at display size: italic at 4rem gets mushy.
+     Italic is reserved for the attribution, which inverts the usual pairing. */
+}
+blockquote.long{
+  font-size:clamp(1.25rem,.95rem + 1.35vw,1.85rem); line-height:1.45; letter-spacing:-.005em;
+  max-width:60ch;
+}
+/* Hanging opening quote, true to print. */
+blockquote::before{content:"\201C"; margin-left:-.45em; color:var(--gold); opacity:.45}
+@media (max-width:600px){blockquote::before{margin-left:0}}
+
+/* --- Motion: a wipe. The new quote is revealed downward behind a mask,
+       the way a page turns rather than a slideshow crossfading. --- */
+#q{
+  transition:opacity .55s cubic-bezier(.33,1,.68,1), transform .55s cubic-bezier(.33,1,.68,1);
+}
+.is-out #q{opacity:0; transform:translateY(-14px)}
+.is-in  #q{opacity:0; transform:translateY(16px)}
+
+/* --- Footer with a real ruled line and the tagline given weight. --- */
+.footline{
+  border-top:1px solid var(--line); padding:22px 0 32px;
+  display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap;
+  font-size:12.5px; color:var(--muted);
+}
+.footline b{color:var(--fg); font-weight:600}
+.footline a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--gold); opacity:.9}
+.footline a:hover{opacity:1}
+.footline small a{color:var(--muted); border-bottom-color:var(--line)}
+.dots{display:flex; gap:6px; align-items:center}
+.dots i{width:5px; height:5px; border-radius:50%; background:var(--line); transition:background .4s, transform .4s}
+.dots i.on{background:var(--gold); transform:scale(1.25)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap header-inner">
+    <a class="brandmark" href="#"><img src="../assets/logo.png" alt=""><span>Teach Me to Live</span></a>
+    <nav><a href="#">About</a><a href="#">Projects</a><a href="#">Contact</a></nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="reading" id="qw" aria-live="polite">
+      <div id="q" style="display:contents">
+        <div class="side">
+          <div class="n" id="qn">01</div>
+          <div class="who" id="qwho">Socrates</div>
+          <div class="src" id="qsrc"></div>
+        </div>
+        <blockquote id="qtext">The unexamined life is not worth living.</blockquote>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="wrap">
+  <div class="footline">
+    <span><b>Tools for learning.</b> Makers of <a href="#">ProtoQuiz™</a>.</span>
+    <span class="dots" id="dots"></span>
+    <small>© 2026 Teach Me To Live LLC · <a href="#">Privacy</a> · <a href="#">Terms</a></small>
+  </div>
+</div>
+
+<script>
+const seq=[
+ {t:"The unexamined life is not worth living.",who:"Socrates",src:""},
+ {t:"Forever is composed of nows.",who:"Emily Dickinson",src:""},
+ {t:"It is not that we have a short time to live, but that we waste a lot of it. Life is long enough, and a sufficiently generous amount has been given to us for the highest achievements if it were all well invested. But when it is wasted in heedless luxury and spent on no good activity, we are forced at last by death’s final constraint to realize that it has passed away before we knew it was passing.",who:"Seneca",src:"On the Shortness of Life"},
+ {t:"Paths are made by walking.",who:"Franz Kafka",src:""},
+ {t:"But how could you live and have no story to tell?",who:"Fyodor Dostoevsky",src:"White Nights"},
+ {t:"Every sorrow suggests a thousand songs, and every song calls a thousand sorrows; and so they are infinite in number, and all the same.",who:"Marilynne Robinson",src:"Housekeeping"}
+];
+const qw=document.getElementById('qw'),qt=document.getElementById('qtext'),
+      who=document.getElementById('qwho'),src=document.getElementById('qsrc'),
+      n=document.getElementById('qn'),dots=document.getElementById('dots');
+seq.forEach(()=>dots.insertAdjacentHTML('beforeend','<i></i>'));
+const pips=[...dots.children];
+let i=0,timer;
+const dwell=q=>Math.min(9+Math.max(0,(q.t.length-140)/26),26);
+
+function show(k){
+  clearTimeout(timer);
+  qw.classList.add('is-out');
+  setTimeout(()=>{
+    i=(k+seq.length)%seq.length; const q=seq[i];
+    qt.innerHTML=q.t; who.textContent=q.who; src.textContent=q.src;
+    n.textContent=String(i+1).padStart(2,'0');
+    qt.classList.toggle('long',q.t.length>230);
+    pips.forEach((p,j)=>p.classList.toggle('on',j===i));
+    qw.classList.remove('is-out'); qw.classList.add('is-in');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>qw.classList.remove('is-in')));
+    timer=setTimeout(()=>show(i+1),dwell(q)*1000);
+  },560);
+}
+show(0);
+</script>
+</body>
+</html>

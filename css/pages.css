@@ -1,0 +1,188 @@
+/* ============================================================
+   F · Atrium — shared page system
+   Same ground, type and timing as the homepage. Inner pages are
+   left-aligned and ruled; the homepage stays centered because
+   the quote is a different kind of object.
+   ============================================================ */
+:root{
+  --ink:   oklch(4.5% 0.004 260);
+  --line:  oklch(19% 0.006 260);
+  --line-2:oklch(14% 0.005 260);
+  --fg:    oklch(94% 0.005 90);
+  --muted: oklch(54% 0.008 260);
+  --faint: oklch(34% 0.007 260);
+
+  --serif:"Spectral","Iowan Old Style",Palatino,Georgia,serif;
+  --sans:"Archivo",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; min-height:100svh; background:var(--ink); color:var(--fg);
+  font:400 16px/1.65 var(--sans); -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column;
+}
+/* Same overhead wash + grain as the homepage, so the pages feel like one room. */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(78vmax 46vmax at 50% -8%, oklch(84% 0.02 250 / .055), transparent 66%);
+  animation:wash 26s ease-in-out infinite alternate;
+}
+@keyframes wash{0%{opacity:.7}100%{opacity:1}}
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{width:min(1080px,100%); margin:0 auto; padding:0 clamp(22px,5vw,48px); position:relative; z-index:1}
+
+/* ---------- Chrome (identical to homepage) ---------- */
+header{padding:30px 0}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:20px}
+.brand,nav a{
+  font:500 10px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase;
+  color:var(--faint); text-decoration:none; transition:color .5s ease;
+}
+nav{display:flex; gap:clamp(18px,3vw,32px)}
+.brand:hover,nav a:hover{color:var(--fg)}
+nav a[aria-current=page]{color:var(--fg)}
+
+main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
+
+/* ---------- Page head ---------- */
+.pagehead{max-width:34ch}
+.eyebrow{
+  margin:0 0 20px; font:500 10px/1 var(--sans);
+  letter-spacing:.24em; text-transform:uppercase; color:var(--faint);
+}
+/* The statement is serif and large: it carries the page the way the quote
+   carries the homepage. Never a bare noun like "About TMTL". */
+.statement{
+  margin:0; font:300 clamp(1.7rem,1.1rem + 2.3vw,2.6rem)/1.26 var(--serif);
+  letter-spacing:-.014em; text-wrap:balance; color:var(--fg);
+}
+.lede{
+  margin:22px 0 0; max-width:56ch; color:var(--muted); font-size:15.5px; line-height:1.7;
+}
+
+/* ---------- Ruled rows (replaces card grids) ---------- */
+.rows{margin-top:clamp(48px,8vh,86px); border-top:1px solid var(--line-2)}
+.row{
+  display:grid; grid-template-columns:3.5rem minmax(0,1fr); gap:clamp(14px,3vw,30px);
+  padding:clamp(22px,3.6vh,32px) 0; border-bottom:1px solid var(--line-2);
+  align-items:start;
+}
+.rn{
+  font:500 10px/1.9 var(--sans); letter-spacing:.2em; color:var(--faint);
+  font-variant-numeric:tabular-nums;
+}
+.rbody h2{
+  margin:0 0 7px; font:500 13px/1.4 var(--sans);
+  letter-spacing:.13em; text-transform:uppercase; color:var(--fg);
+}
+.rbody p{margin:0; color:var(--muted); max-width:62ch; line-height:1.7}
+.rbody p + p{margin-top:9px}
+/* Hover lifts the whole row a hair. No border-color tricks, no translate on cards. */
+.row{transition:background .5s ease}
+.row:hover{background:oklch(100% 0 0 / .012)}
+
+/* ---------- Project rows: same skeleton, plus mark and link ---------- */
+.row--proj{grid-template-columns:64px minmax(0,1fr) auto; align-items:center}
+@media (max-width:700px){
+  .row--proj{grid-template-columns:48px minmax(0,1fr); row-gap:14px}
+  .row--proj .go{grid-column:2; justify-self:start}
+}
+.mark{
+  width:64px; height:64px; border-radius:12px; overflow:hidden;
+  border:1px solid var(--line-2); background:oklch(8% 0.004 260);
+  display:grid; place-items:center;
+}
+@media (max-width:700px){.mark{width:48px;height:48px}}
+.mark img{width:82%; height:82%; object-fit:contain; display:block}
+.row--proj h2{margin:0 0 5px; font-size:14px; letter-spacing:.1em}
+.go{
+  font:500 10px/1 var(--sans); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted); text-decoration:none; white-space:nowrap;
+  padding-bottom:4px; border-bottom:1px solid var(--line); transition:color .4s, border-color .4s;
+}
+.row--proj:hover .go{color:var(--fg); border-color:var(--muted)}
+
+/* ---------- Plate (single image, given room) ---------- */
+.plate{margin:clamp(48px,8vh,88px) 0 0}
+.plate img{
+  width:100%; height:auto; display:block; border-radius:3px;
+  filter:grayscale(100%) contrast(106%) brightness(.82);
+  border:1px solid var(--line-2);
+}
+/* For low-resolution sources: never upscale past native width. */
+.plate--small img{max-width:284px}
+.plate figcaption{
+  margin-top:12px; font:500 10px/1 var(--sans);
+  letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
+}
+
+/* ---------- Prose (privacy / terms) ---------- */
+.prose{max-width:66ch; margin-top:clamp(34px,5vh,54px)}
+.prose p{margin:0 0 18px; color:var(--muted); line-height:1.78}
+.prose p:last-child{margin-bottom:0}
+.prose a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--line); transition:border-color .4s}
+.prose a:hover{border-color:var(--muted)}
+.prose h2{
+  margin:34px 0 12px; font:500 11px/1 var(--sans);
+  letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
+}
+
+/* ---------- Form (contact) ---------- */
+.form{max-width:34rem; margin-top:clamp(34px,5vh,52px); display:grid; gap:18px}
+.field{display:grid; gap:8px}
+.field label{
+  font:500 10px/1 var(--sans); letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
+}
+/* Underline fields, not boxes. Boxes make a 3-field form look like a database
+   admin screen; rules keep it closer to a letterhead. */
+.field input,.field textarea{
+  width:100%; background:transparent; color:var(--fg);
+  border:0; border-bottom:1px solid var(--line); border-radius:0;
+  padding:9px 0; font:400 16px/1.6 var(--sans);
+  transition:border-color .45s ease;
+}
+.field textarea{min-height:118px; resize:vertical}
+.field input:focus,.field textarea:focus{outline:0; border-bottom-color:var(--fg)}
+.field input::placeholder,.field textarea::placeholder{color:oklch(28% .006 260)}
+.send{
+  justify-self:start; margin-top:6px; cursor:pointer;
+  background:transparent; color:var(--fg);
+  border:1px solid var(--line); border-radius:999px;
+  padding:12px 26px; font:500 10px/1 var(--sans);
+  letter-spacing:.22em; text-transform:uppercase;
+  transition:border-color .4s ease, background .4s ease;
+}
+.send:hover{border-color:var(--muted); background:oklch(100% 0 0 / .022)}
+.send:disabled{opacity:.5; cursor:default}
+.note{font-size:13.5px; margin:0}
+.note.ok{color:oklch(80% .09 150)}
+.note.bad{color:oklch(74% .11 25)}
+.aside{margin-top:30px; color:var(--muted); font-size:14.5px}
+.aside a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--line)}
+.aside a:hover{border-color:var(--muted)}
+
+/* ---------- Footline (identical to homepage) ---------- */
+.footline{
+  border-top:1px solid var(--line); padding:22px 0 34px;
+  display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap;
+  font-size:12px; color:var(--faint);
+}
+.footline b{color:var(--muted); font-weight:500}
+.footline a{color:var(--muted); text-decoration:none; transition:color .4s}
+.footline a:hover{color:var(--fg)}
+
+/* ---------- Entrance: one staged reveal, matching the homepage's calm ---------- */
+.reveal{opacity:0; transform:translateY(10px)}
+.reveal.in{
+  opacity:1; transform:none;
+  transition:opacity .9s cubic-bezier(.4,0,.2,1) var(--d,0s),
+             transform .9s cubic-bezier(.4,0,.2,1) var(--d,0s);
+}
+@media (prefers-reduced-motion:reduce){
+  body::before{animation:none}
+  .reveal{opacity:1!important; transform:none!important; transition:none!important}
+}

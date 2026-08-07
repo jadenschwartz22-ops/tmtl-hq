@@ -7,10 +7,42 @@
   <title>Teach Me to Live — Tools for Learning</title>
   <meta name="description" content="Intentional, minimalist software for learning. Minimal noise, maximal signal." />
   <link rel="canonical" href="https://teachmetolive.com/" />
-  <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" href="/favicon.ico" sizes="any">
-
   <meta name="theme-color" content="#000000" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/pages.css" />
+  <style>
+    /* Homepage only: the quote is centered and is the whole page.
+       Inner pages are left-aligned; that difference is intentional. */
+    main.reading{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,7vh,80px) 0}
+    .emblem{width:40px; height:40px; border-radius:9px; display:block; margin:0 auto clamp(44px,8vh,72px); opacity:.8}
+    .quote-wrap{max-width:43ch; margin:0 auto; text-align:center}
+    blockquote{
+      margin:0; text-wrap:balance;
+      font:300 italic clamp(1.7rem,1.15rem + 2.4vw,2.75rem)/1.32 var(--serif);
+      letter-spacing:-.013em;
+    }
+    blockquote.long{font-size:clamp(1.12rem,.94rem + 1vw,1.5rem); line-height:1.58; letter-spacing:-.002em}
+    blockquote::before{content:"\201C"; position:absolute; margin-left:-.56em; color:var(--faint); line-height:inherit}
+    @media (max-width:640px){blockquote::before{display:none}}
+    .w{display:inline-block; white-space:pre; opacity:0; will-change:opacity}
+    .w.in{opacity:1; transition:opacity .95s cubic-bezier(.4,0,.2,1)}
+    .w.out{opacity:0; transition:opacity .5s ease-in}
+    .attr{
+      margin-top:clamp(28px,4.8vh,40px); opacity:0;
+      font:500 10px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase; color:var(--muted);
+      transition:opacity .8s ease;
+    }
+    .attr.in{opacity:1}
+    .attr em{font-style:normal; color:var(--faint)}
+    .attr::before{content:""; display:block; width:26px; height:1px; margin:0 auto 16px; background:var(--line)}
+    @media (prefers-reduced-motion:reduce){
+      .w{opacity:1!important; transition:none!important}
+      .attr{opacity:1!important}
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -24,31 +56,27 @@
     </div>
   </header>
 
-  <main class="wrap center">
-    <!-- The quote IS the hero (Reading Room) -->
-    <section class="hero hero--reading">
-      <img class="logo logo--emblem" src="assets/logo.png" alt="Teach Me to Live emblem" />
-      <div class="quote-wrap" aria-live="polite" id="qw">
-        <div id="q">
-          <blockquote id="qtext" class="quote-lg">“The unexamined life is not worth living.”</blockquote>
-          <div id="qattr" class="quote-attr">Socrates</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="footline">
-      <span><b>Tools for learning.</b> Makers of <a href="https://protoquiz.com">ProtoQuiz&trade;</a>.</span>
-      <small>© <span id="y"></span> Teach Me To Live LLC · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></small>
+  <main class="reading wrap">
+    <img class="emblem" src="assets/logo-sm.png" alt="" />
+    <div class="quote-wrap" aria-live="polite">
+      <blockquote id="qtext"></blockquote>
+      <div class="attr" id="qattr">Socrates</div>
     </div>
   </main>
 
+  <div class="wrap">
+    <div class="footline">
+      <span><b>Tools for learning.</b> Makers of <a href="https://protoquiz.com">ProtoQuiz&trade;</a>.</span>
+      <small>&copy; <span class="y"></span> Teach Me To Live LLC &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></small>
+    </div>
+  </div>
+
   <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+    document.querySelectorAll('.y').forEach(el => el.textContent = new Date().getFullYear());
 
     // Only the first quote is fixed; all others are randomized.
     const first = { text: "“The unexamined life is not worth living.”", attr: "— Socrates", author: "Socrates" };
 
-    // Full pool (with full-length Seneca restored)
     const poolRaw = [
       { text: "“Though free to think and act, we are held together like stars in the firmament with ties inseparable. These ties cannot be seen, but we can feel them. We are all one.”", attr: "— Nikola Tesla", author: "Nikola Tesla" },
       { text: "“Never was an age more sentimental, more devoid of real feeling, more exaggerated in false feeling, than our own.”", attr: "— D. H. Lawrence", author: "D. H. Lawrence" },
@@ -92,7 +120,6 @@
       { text: "“There is no reality except in action. Man is nothing else than his plan; he exists only to the extent that he fulfills himself; he is therefore nothing else than the ensemble of his acts, nothing else than his life.”", attr: "— Jean-Paul Sartre, <em>Existentialism is a Humanism</em>", author: "Jean-Paul Sartre" }
     ];
 
-    // --- Helper utilities ---
     const textSeen = new Set();
     function dedupe(list){
       const out = [];
@@ -106,46 +133,76 @@
       }
       return arr;
     }
-    // Slightly longer display time for longer quotes (base ~10s).
     function plainLen(html){
       const el = document.createElement('div'); el.innerHTML = html;
       return (el.textContent || "").trim().length;
     }
+    // Longer passages get more time on screen, capped so it never drags.
     function durationFor(q){
-      const base = 10;             // seconds
-      const L = plainLen(q.text);
-      const extra = Math.max(0, (L - 140) / 28); // ~+1s per ~28 chars beyond 140
-      return Math.min(base + extra, 26);         // small cap so it never drags
+      const extra = Math.max(0, (plainLen(q.text) - 140) / 26);
+      return Math.min(10.5 + extra, 26);
     }
 
     const pool = shuffle(dedupe(poolRaw));
     const sequence = [first, ...pool];
 
-    const qw   = document.getElementById('qw');
-    const qtext= document.getElementById('qtext');
-    const qattr= document.getElementById('qattr');
-
+    const qt = document.getElementById('qtext');
+    const qa = document.getElementById('qattr');
+    const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
     let idx = 0, timer = null;
 
-    function scheduleNext(){
-      clearTimeout(timer);
-      timer = setTimeout(() => setQuote(idx + 1), durationFor(sequence[idx]) * 1000);
+    // Each word is its own span so the passage can fade in by phrase.
+    // Only opacity animates, so this never touches layout.
+    function build(html){
+      qt.innerHTML = '';
+      const tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      // Walk nodes so <em> inside a quote keeps its markup.
+      (function walk(src, dest){
+        for (const node of src.childNodes){
+          if (node.nodeType === 3){
+            for (const tok of node.nodeValue.split(/(\s+)/)){
+              if (!tok) continue;
+              const s = document.createElement('span');
+              s.className = 'w'; s.textContent = tok; dest.appendChild(s);
+            }
+          } else {
+            const el = document.createElement(node.tagName);
+            dest.appendChild(el); walk(node, el);
+          }
+        }
+      })(tmp, qt);
+      return qt.querySelectorAll('.w');
     }
 
     function setQuote(i){
-      idx = (i + sequence.length) % sequence.length;
-      qw.classList.add('is-fading');
+      clearTimeout(timer);
+      qt.querySelectorAll('.w').forEach((w, j) => {
+        w.classList.remove('in'); w.classList.add('out');
+        w.style.transitionDelay = (j * 6) + 'ms';
+      });
+      qa.classList.remove('in');
+
       setTimeout(() => {
-        const { text, attr } = sequence[idx];
-        qtext.innerHTML = text;
-        qtext.classList.toggle('long', plainLen(text) > 260);
-        qattr.innerHTML = attr.replace(/^—\s*/, '');
-        qw.classList.remove('is-fading');
-        scheduleNext();
-      }, 480); // mid-fade swap
+        idx = (i + sequence.length) % sequence.length;
+        const q = sequence[idx];
+        const long = plainLen(q.text) > 230;
+        qt.classList.toggle('long', long);
+        const ws = build(q.text);
+        qa.innerHTML = q.attr.replace(/^—\s*/, '');
+        const step = long ? 18 : 52;   // pairs of words, so it reads as phrases
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          ws.forEach((w, j) => {
+            w.style.transitionDelay = (Math.floor(j / 2) * step) + 'ms';
+            w.classList.add('in');
+          });
+          setTimeout(() => qa.classList.add('in'), Math.min(ws.length / 2 * step, 1000) + 300);
+        }));
+        timer = setTimeout(() => setQuote(idx + 1), durationFor(q) * 1000);
+      }, reduce ? 0 : 560);
     }
 
-    // init
+    build(first.text);
     setQuote(0);
   </script>
 </body>

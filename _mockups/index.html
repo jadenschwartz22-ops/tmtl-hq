@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="dark"/>
+<title>TMTL — Homepage directions</title>
+<style>
+:root{--bg:oklch(15% 0.006 65);--fg:oklch(94% 0.008 75);--muted:oklch(62% 0.012 70);--line:oklch(28% 0.01 65)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,sans-serif;padding:26px}
+h1{font-size:15px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 4px}
+p.sub{color:var(--muted);margin:0 0 22px;font-size:13.5px}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+figure{margin:0}
+.frame{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/11}
+iframe{width:200%;height:200%;border:0;transform:scale(.5);transform-origin:0 0}
+figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:9px;font-size:13px}
+figcaption b{font-weight:600}
+figcaption span{color:var(--muted);font-size:12.5px}
+a.open{color:var(--fg);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;white-space:nowrap}
+a.open:hover{border-color:var(--fg)}
+</style>
+</head>
+<body>
+<h1>Homepage directions</h1>
+<p class="sub">Live pages, not images. Watch each for ~30s to see the rotation and motion. Open full-size to judge properly.</p>
+<div class="grid">
+  <figure>
+    <div class="frame"><iframe src="a-ember.html" title="Variant A"></iframe></div>
+    <figcaption><b>A · Ember</b><span>Warm black, centered, dwell meter</span><a class="open" href="a-ember.html">Open</a></figcaption>
+  </figure>
+  <figure>
+    <div class="frame"><iframe src="b-vellum.html" title="Variant B"></iframe></div>
+    <figcaption><b>B · Vellum</b><span>Big left-aligned type, sidenote</span><a class="open" href="b-vellum.html">Open</a></figcaption>
+  </figure>
+  <figure>
+    <div class="frame"><iframe src="c-nocturne.html" title="Variant C"></iframe></div>
+    <figcaption><b>C · Nocturne</b><span>Word-by-word, cursor-lit</span><a class="open" href="c-nocturne.html">Open</a></figcaption>
+  </figure>
+</div>
+</body>
+</html>

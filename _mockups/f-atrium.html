@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>F · Atrium — Teach Me to Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   F — "Atrium"
+   Your black, kept, with the faintest overhead wash — like a
+   skylight in a dark room. The quote fades line-group by
+   line-group instead of all at once. Fancy lives in the timing.
+   ============================================================ */
+:root{
+  --ink:   oklch(4.5% 0.004 260);
+  --line:  oklch(19% 0.006 260);
+  --fg:    oklch(94% 0.005 90);
+  --muted: oklch(54% 0.008 260);
+  --faint: oklch(34% 0.007 260);
+
+  --serif:"Spectral","Iowan Old Style",Palatino,Georgia,serif;
+  --sans:"Archivo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100svh; background:var(--ink); color:var(--fg);
+  font:400 16px/1.6 var(--sans); -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column;
+}
+/* Overhead wash: a single cool shaft from directly above, at 3.5%.
+   Kept cool and very low so it reads as architecture, not as a "glow". */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(78vmax 46vmax at 50% -8%, oklch(84% 0.02 250 / .055), transparent 66%);
+  animation:wash 26s ease-in-out infinite alternate;
+}
+@keyframes wash{0%{opacity:.7}100%{opacity:1}}
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{width:min(1080px,100%); margin:0 auto; padding:0 clamp(22px,5vw,48px); position:relative; z-index:1}
+
+header{padding:30px 0}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:20px}
+.brand,nav a{
+  font:500 10px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase;
+  color:var(--faint); text-decoration:none; transition:color .5s ease;
+}
+nav{display:flex; gap:clamp(18px,3vw,32px)}
+.brand:hover,nav a:hover{color:var(--fg)}
+
+main{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,7vh,80px) 0}
+.emblem{width:40px; height:40px; border-radius:9px; display:block; margin:0 auto clamp(44px,8vh,72px); opacity:.8}
+
+.quote-wrap{max-width:43ch; margin:0 auto; text-align:center}
+blockquote{
+  margin:0; text-wrap:balance;
+  font:300 italic clamp(1.7rem,1.15rem + 2.4vw,2.75rem)/1.32 var(--serif);
+  letter-spacing:-.013em;
+}
+blockquote.long{
+  font-size:clamp(1.12rem,.94rem + 1vw,1.5rem); line-height:1.58; letter-spacing:-.002em;
+}
+blockquote::before{
+  content:"\201C"; position:absolute; margin-left:-.56em; color:var(--faint); line-height:inherit;
+}
+@media (max-width:640px){blockquote::before{display:none}}
+
+/* Words fade in small groups. Slower and softer than C — no blur,
+   no vertical travel, just staged opacity. Reads as composed. */
+.w{display:inline-block; white-space:pre; opacity:0; will-change:opacity}
+.w.in{opacity:1; transition:opacity .95s cubic-bezier(.4,0,.2,1)}
+.w.out{opacity:0; transition:opacity .5s ease-in}
+
+.attr{
+  margin-top:clamp(28px,4.8vh,40px); opacity:0;
+  font:500 10px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase; color:var(--muted);
+  transition:opacity .8s ease;
+}
+.attr.in{opacity:1}
+.attr em{font-style:normal; color:var(--faint)}
+.attr::before{content:""; display:block; width:26px; height:1px; margin:0 auto 16px; background:var(--line)}
+
+.footline{
+  border-top:1px solid var(--line); padding:22px 0 34px;
+  display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap;
+  font-size:12px; color:var(--faint);
+}
+.footline b{color:var(--muted); font-weight:500}
+.footline a{color:var(--muted); text-decoration:none; transition:color .4s}
+.footline a:hover{color:var(--fg)}
+
+@media (prefers-reduced-motion:reduce){
+  body::before{animation:none}
+  .w{opacity:1!important; transition:none!important}
+  .attr{opacity:1!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="f-atrium.html">Teach Me to Live</a>
+    <nav><a href="f-about.html">About</a><a href="f-projects.html">Projects</a><a href="f-contact.html">Contact</a></nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <img class="emblem" src="../assets/logo.png" alt="" />
+    <div class="quote-wrap" aria-live="polite">
+      <blockquote id="qtext"></blockquote>
+      <div class="attr" id="qattr">Socrates</div>
+    </div>
+  </div>
+</main>
+
+<div class="wrap">
+  <div class="footline">
+    <span><b>Tools for learning.</b> Makers of <a href="https://protoquiz.com">ProtoQuiz™</a>.</span>
+    <small>© 2026 Teach Me To Live LLC · <a href="f-privacy.html">Privacy</a> · <a href="f-terms.html">Terms</a></small>
+  </div>
+</div>
+
+<script>
+const seq=[
+ {t:"The unexamined life is not worth living.",a:"Socrates"},
+ {t:"Forever is composed of nows.",a:"Emily Dickinson"},
+ {t:"It is not that we have a short time to live, but that we waste a lot of it. Life is long enough, and a sufficiently generous amount has been given to us for the highest achievements if it were all well invested. But when it is wasted in heedless luxury and spent on no good activity, we are forced at last by death’s final constraint to realize that it has passed away before we knew it was passing.",a:"Seneca, <em>On the Shortness of Life</em>"},
+ {t:"Paths are made by walking.",a:"Franz Kafka"},
+ {t:"But how could you live and have no story to tell?",a:"Fyodor Dostoevsky, <em>White Nights</em>"},
+ {t:"Every sorrow suggests a thousand songs, and every song calls a thousand sorrows; and so they are infinite in number, and all the same.",a:"Marilynne Robinson, <em>Housekeeping</em>"}
+];
+const qt=document.getElementById('qtext'),qa=document.getElementById('qattr');
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+let i=0,timer;
+const dwell=q=>Math.min(10.5+Math.max(0,(q.t.length-140)/26),26);
+
+function build(text){
+  qt.innerHTML='';
+  text.split(/(\s+)/).forEach(tok=>{
+    if(!tok) return;
+    const s=document.createElement('span'); s.className='w'; s.textContent=tok; qt.appendChild(s);
+  });
+  return [...qt.children];
+}
+function show(k){
+  clearTimeout(timer);
+  [...qt.children].forEach((w,j)=>{w.classList.remove('in');w.classList.add('out');w.style.transitionDelay=(j*6)+'ms'});
+  qa.classList.remove('in');
+  setTimeout(()=>{
+    i=(k+seq.length)%seq.length; const q=seq[i];
+    const long=q.t.length>230;
+    qt.classList.toggle('long',long);
+    const ws=build(q.t);
+    qa.innerHTML=q.a;
+    // Group words in pairs so it fades in phrases, not word-by-word ticker.
+    const step=long?18:52;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      ws.forEach((w,j)=>{w.style.transitionDelay=(Math.floor(j/2)*step)+'ms'; w.classList.add('in')});
+      setTimeout(()=>qa.classList.add('in'), Math.min(ws.length/2*step,1000)+300);
+    }));
+    timer=setTimeout(()=>show(i+1),dwell(q)*1000);
+  }, reduce?0:560);
+}
+build(seq[0].t); show(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="dark"/>
+<title>TMTL — Darker & classier</title>
+<style>
+:root{--bg:#000;--fg:oklch(93% .005 90);--muted:oklch(52% .008 250);--line:oklch(20% .006 250)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,sans-serif;padding:26px}
+h1{font-size:14px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 5px}
+p.sub{color:var(--muted);margin:0 0 24px;font-size:13px;max-width:70ch}
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+figure{margin:0}
+.frame{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#000;aspect-ratio:16/11}
+.frame.base{border-style:dashed}
+iframe{width:200%;height:200%;border:0;transform:scale(.5);transform-origin:0 0}
+figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:10px;font-size:12.5px}
+figcaption b{font-weight:600;letter-spacing:.02em}
+figcaption span{color:var(--muted);font-size:12px}
+a.open{color:var(--muted);font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;white-space:nowrap}
+a.open:hover{color:var(--fg)}
+</style>
+</head>
+<body>
+<h1>Darker &amp; classier</h1>
+<p class="sub">All three sit at near-black like your live site. The first pane is your current site as a baseline. Watch ~30s each; the difference is mostly in type, spacing and timing, which stills don't show.</p>
+<div class="grid">
+  <figure>
+    <div class="frame base"><iframe src="../index.html" title="Current"></iframe></div>
+    <figcaption><b>Current</b><span>Live site, for reference</span><a class="open" href="../index.html">Open</a></figcaption>
+  </figure>
+  <figure>
+    <div class="frame"><iframe src="d-obsidian.html" title="D"></iframe></div>
+    <figcaption><b>D · Obsidian</b><span>Pure restraint, no color</span><a class="open" href="d-obsidian.html">Open</a></figcaption>
+  </figure>
+  <figure>
+    <div class="frame"><iframe src="e-gilt.html" title="E"></iframe></div>
+    <figcaption><b>E · Gilt</b><span>Aged brass, one note</span><a class="open" href="e-gilt.html">Open</a></figcaption>
+  </figure>
+  <figure>
+    <div class="frame"><iframe src="f-atrium.html" title="F"></iframe></div>
+    <figcaption><b>F · Atrium</b><span>Overhead wash, phrase fade</span><a class="open" href="f-atrium.html">Open</a></figcaption>
+  </figure>
+</div>
+</body>
+</html>

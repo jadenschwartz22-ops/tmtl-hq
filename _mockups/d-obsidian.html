@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>D · Obsidian — Teach Me to Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=Archivo:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   D — "Obsidian"
+   Your black, kept. Class comes from typography and spacing,
+   not from light. No glow, no accent color, no effects.
+   The only luxury is restraint executed precisely.
+   ============================================================ */
+:root{
+  --ink:   oklch(4% 0.003 250);     /* near-black. barely cooler than #000 */
+  --line:  oklch(19% 0.004 250);
+  --fg:    oklch(93% 0.004 90);
+  --muted: oklch(52% 0.006 250);
+  --faint: oklch(34% 0.005 250);
+
+  --serif:"Spectral","Iowan Old Style",Palatino,Georgia,serif;
+  --sans:"Archivo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100svh; background:var(--ink); color:var(--fg);
+  font:400 16px/1.6 var(--sans); -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column;
+}
+/* The only atmosphere: a whisper of grain so the black has a surface.
+   No gradients, no glow. */
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.11;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{width:min(1080px,100%); margin:0 auto; padding:0 clamp(22px,5vw,48px); position:relative; z-index:1}
+
+/* --- Chrome: smaller, quieter, wider-tracked than yours. --- */
+header{padding:30px 0}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:20px}
+.brand,nav a{
+  font:500 10px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase;
+  color:var(--faint); text-decoration:none; transition:color .5s ease;
+}
+nav{display:flex; gap:clamp(18px,3vw,32px)}
+.brand:hover,nav a:hover{color:var(--fg)}
+
+main{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,7vh,80px) 0}
+
+.emblem{
+  width:40px; height:40px; border-radius:9px; display:block;
+  margin:0 auto clamp(44px,8vh,72px); opacity:.82;
+}
+
+/* --- The quote. Larger and lighter-weight than yours; the class is in
+       the optical detail: negative tracking, balanced wrap, hung quote. --- */
+.quote-wrap{max-width:43ch; margin:0 auto; text-align:center}
+blockquote{
+  margin:0; text-wrap:balance;
+  font:300 italic clamp(1.7rem,1.15rem + 2.4vw,2.75rem)/1.31 var(--serif);
+  letter-spacing:-.014em;
+}
+blockquote.long{
+  font-size:clamp(1.12rem,.94rem + 1vw,1.5rem); line-height:1.56; letter-spacing:-.002em;
+}
+/* Hung opening quote in the faintest grey. Print convention, not decoration. */
+blockquote::before{
+  content:"\201C"; position:absolute; margin-left:-.56em;
+  color:var(--faint); font-size:1em; line-height:inherit;
+}
+@media (max-width:640px){blockquote::before{display:none}}
+
+.attr{
+  margin-top:clamp(28px,4.8vh,40px);
+  font:500 10px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase; color:var(--muted);
+}
+.attr em{font-style:normal; color:var(--faint)}
+/* A plain hairline. No gradient, no color. */
+.attr::before{
+  content:""; display:block; width:26px; height:1px; margin:0 auto 16px; background:var(--line);
+}
+
+/* --- Motion: a slow, even dissolve. Nothing slides, nothing blurs.
+       Long durations read as composed; fast ones read as cheap. --- */
+#q{transition:opacity 1.05s cubic-bezier(.4,0,.2,1)}
+.is-out #q{opacity:0}
+
+.footline{
+  border-top:1px solid var(--line); padding:22px 0 34px;
+  display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap;
+  font-size:12px; color:var(--faint);
+}
+.footline b{color:var(--muted); font-weight:500}
+.footline a{color:var(--muted); text-decoration:none; transition:color .4s}
+.footline a:hover{color:var(--fg)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#">Teach Me to Live</a>
+    <nav><a href="#">About</a><a href="#">Projects</a><a href="#">Contact</a></nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <img class="emblem" src="../assets/logo.png" alt="" />
+    <div class="quote-wrap" id="qw" aria-live="polite">
+      <div id="q">
+        <blockquote id="qtext">The unexamined life is not worth living.</blockquote>
+        <div class="attr" id="qattr">Socrates</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="wrap">
+  <div class="footline">
+    <span><b>Tools for learning.</b> Makers of <a href="#">ProtoQuiz™</a>.</span>
+    <small>© 2026 Teach Me To Live LLC · <a href="#">Privacy</a> · <a href="#">Terms</a></small>
+  </div>
+</div>
+
+<script>
+const seq=[
+ {t:"The unexamined life is not worth living.",a:"Socrates"},
+ {t:"Forever is composed of nows.",a:"Emily Dickinson"},
+ {t:"It is not that we have a short time to live, but that we waste a lot of it. Life is long enough, and a sufficiently generous amount has been given to us for the highest achievements if it were all well invested. But when it is wasted in heedless luxury and spent on no good activity, we are forced at last by death’s final constraint to realize that it has passed away before we knew it was passing.",a:"Seneca, <em>On the Shortness of Life</em>"},
+ {t:"Paths are made by walking.",a:"Franz Kafka"},
+ {t:"But how could you live and have no story to tell?",a:"Fyodor Dostoevsky, <em>White Nights</em>"},
+ {t:"Every sorrow suggests a thousand songs, and every song calls a thousand sorrows; and so they are infinite in number, and all the same.",a:"Marilynne Robinson, <em>Housekeeping</em>"}
+];
+const qw=document.getElementById('qw'),qt=document.getElementById('qtext'),qa=document.getElementById('qattr');
+let i=0,timer;
+const plain=h=>{const d=document.createElement('div');d.innerHTML=h;return (d.textContent||'').length};
+const dwell=q=>Math.min(10+Math.max(0,(plain(q.t)-140)/26),26);
+function show(k){
+  clearTimeout(timer);
+  qw.classList.add('is-out');
+  setTimeout(()=>{
+    i=(k+seq.length)%seq.length; const q=seq[i];
+    qt.innerHTML=q.t; qa.innerHTML=q.a;
+    qt.classList.toggle('long',plain(q.t)>230);
+    qw.classList.remove('is-out');
+    timer=setTimeout(()=>show(i+1),dwell(q)*1000);
+  },1050); // matches the CSS duration exactly
+}
+show(0);
+</script>
+</body>
+</html>
