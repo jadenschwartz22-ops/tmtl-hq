@@ -48,8 +48,11 @@ nav a[aria-current=page]{color:var(--fg)}
 
 main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
 
-/* ---------- Page head ---------- */
-.pagehead{max-width:34ch}
+/* ---------- Page head ----------
+   Measure widens with the viewport. A fixed 34ch left a large dead zone on
+   desktop; the statement should fill its line, not trickle down a column. */
+.pagehead{max-width:min(calc(22ch + 18vw), 46ch)}
+@media (max-width:600px){.pagehead{max-width:none}}
 .eyebrow{
   margin:0 0 20px; font:500 10px/1 var(--sans);
   letter-spacing:.24em; text-transform:uppercase; color:var(--faint);
@@ -86,18 +89,31 @@ main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
 .row:hover{background:oklch(100% 0 0 / .012)}
 
 /* ---------- Project rows: same skeleton, plus mark and link ---------- */
-.row--proj{grid-template-columns:64px minmax(0,1fr) auto; align-items:center}
+/* Cap the text column so the destination link sits near the copy instead of
+   being flung to the far edge on wide screens. */
+.row--proj{grid-template-columns:76px minmax(0,58ch) auto; align-items:center; justify-content:start; column-gap:clamp(16px,3vw,34px)}
 @media (max-width:700px){
-  .row--proj{grid-template-columns:48px minmax(0,1fr); row-gap:14px}
+  /* minmax(0,1fr) rather than the 58ch cap, or the text column refuses to
+     shrink below its content and pushes the row off-screen. */
+  .row--proj{grid-template-columns:56px minmax(0,1fr); row-gap:14px}
   .row--proj .go{grid-column:2; justify-self:start}
 }
+/* 04 · Marks with no box. The artwork sits directly on the page ground;
+   the border and fill were only adding edges. Scales gently on hover. */
 .mark{
-  width:64px; height:64px; border-radius:12px; overflow:hidden;
-  border:1px solid var(--line-2); background:oklch(8% 0.004 260);
+  width:76px; height:76px; border-radius:14px; overflow:hidden;
   display:grid; place-items:center;
 }
-@media (max-width:700px){.mark{width:48px;height:48px}}
-.mark img{width:82%; height:82%; object-fit:contain; display:block}
+@media (max-width:700px){.mark{width:56px;height:56px}}
+/* These are opaque app icons with their own artwork backgrounds, so they
+   cannot dissolve the way the white-on-black emblem does. A hairline inset
+   ring reads as a deliberate edge rather than a leftover container. */
+.mark{box-shadow:inset 0 0 0 1px oklch(100% 0 0 / .07)}
+.mark img{
+  width:100%; height:100%; object-fit:contain; display:block;
+  transition:transform .7s cubic-bezier(.16,1,.3,1);
+}
+.row--proj:hover .mark img{transform:scale(1.07)}
 .row--proj h2{margin:0 0 5px; font-size:14px; letter-spacing:.1em}
 .go{
   font:500 10px/1 var(--sans); letter-spacing:.2em; text-transform:uppercase;
@@ -106,18 +122,98 @@ main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
 }
 .row--proj:hover .go{color:var(--fg); border-color:var(--muted)}
 
-/* ---------- Plate (single image, given room) ---------- */
-.plate{margin:clamp(48px,8vh,88px) 0 0}
-.plate img{
-  width:100%; height:auto; display:block; border-radius:3px;
-  filter:grayscale(100%) contrast(106%) brightness(.82);
-  border:1px solid var(--line-2);
+/* ---------- 01 · Bleed: artwork with no container ----------
+   The emblem is white-on-black artwork, so it needs no box. A radial mask
+   eats the square edge and it dissolves into the page ground. */
+.bleed{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(24px,5vw,60px); align-items:center;
+  margin-top:clamp(48px,8vh,86px);
 }
-/* For low-resolution sources: never upscale past native width. */
-.plate--small img{max-width:284px}
+@media (max-width:760px){.bleed{grid-template-columns:1fr; gap:28px}}
+.bleed img{
+  width:100%; max-width:400px; height:auto; display:block; justify-self:center;
+  -webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent 92%);
+          mask-image:radial-gradient(closest-side,#000 55%,transparent 92%);
+  opacity:.95;
+}
+.bleed p{
+  margin:0; text-wrap:balance; letter-spacing:-.01em;
+  font:300 italic clamp(1.35rem,.98rem + 1.5vw,1.95rem)/1.36 var(--serif);
+}
+
+/* ---------- 02 · Plate: photograph pulled into the palette ----------
+   Desaturated and dimmed so it sits in the page's blue-black rather than
+   arriving as a warm holiday photo. The bottom dissolves into the ground,
+   so there is no hard lower edge. */
+.plate{margin:clamp(48px,8vh,88px) 0 0; position:relative; overflow:hidden; border-radius:3px}
+.plate img{
+  width:100%; height:auto; display:block;
+  filter:grayscale(100%) contrast(112%) brightness(.62);
+}
+.plate::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(to bottom, transparent 38%, var(--ink) 97%),
+    radial-gradient(120% 80% at 50% 20%, transparent 40%, oklch(4.5% .004 260 / .75) 100%);
+}
 .plate figcaption{
-  margin-top:12px; font:500 10px/1 var(--sans);
-  letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
+  position:absolute; left:0; right:0; bottom:18px; z-index:2; text-align:center;
+  font:500 10px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase; color:var(--muted);
+}
+
+/* ---------- 03 · Band: full-bleed image with type over it ---------- */
+.band{
+  position:relative; overflow:hidden;
+  min-height:min(74vh,560px); display:grid; place-items:center;
+  /* Break out of the padded .wrap to reach both screen edges.
+     --sbw is the scrollbar width, measured once in JS; subtracting it keeps
+     the band flush with the viewport instead of running under the scrollbar.
+     It defaults to 0, so the layout is correct before the script runs. */
+  width:calc(100vw - var(--sbw,0px)); max-width:calc(100vw - var(--sbw,0px));
+  margin-left:calc(50% - (100vw - var(--sbw,0px)) / 2);
+  margin-right:calc(50% - (100vw - var(--sbw,0px)) / 2);
+  margin-top:clamp(52px,9vh,96px); margin-bottom:clamp(52px,9vh,96px);
+}
+/* A horizontal scrollbar from the 100vw breakout is the classic failure
+   mode of this pattern; forbid it at the root. */
+html,body{overflow-x:hidden}
+.band img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  filter:grayscale(100%) contrast(115%) brightness(.42);
+}
+.band::after{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(100% 70% at 50% 45%, transparent 20%, oklch(4.5% .004 260 / .82) 78%),
+    linear-gradient(var(--ink), transparent 24%, transparent 74%, var(--ink));
+}
+.band .over{position:relative; z-index:2; text-align:center; max-width:38ch; padding:0 24px}
+.band blockquote{
+  margin:0; text-wrap:balance; letter-spacing:-.013em;
+  font:300 italic clamp(1.45rem,1rem + 1.9vw,2.4rem)/1.32 var(--serif);
+}
+.band .who{
+  margin-top:22px; font:500 10px/1 var(--sans);
+  letter-spacing:.24em; text-transform:uppercase; color:var(--muted);
+}
+
+/* ---------- 05 · Reveal: image resolves as it enters view ----------
+   Each host keeps its own resting brightness, so the reveal only animates
+   blur and scale toward whatever that element's normal state is. */
+.rv img{
+  transform:scale(1.06); filter:blur(14px) brightness(.5);
+  transition:filter 1.5s cubic-bezier(.4,0,.2,1), transform 1.7s cubic-bezier(.4,0,.2,1);
+}
+.plate.rv img{filter:grayscale(100%) contrast(112%) brightness(.32) blur(14px)}
+.plate.rv.seen img{filter:grayscale(100%) contrast(112%) brightness(.62) blur(0)}
+.band.rv img{filter:grayscale(100%) contrast(115%) brightness(.20) blur(16px)}
+.band.rv.seen img{filter:grayscale(100%) contrast(115%) brightness(.42) blur(0)}
+.rv.seen img{transform:none}
+@media (prefers-reduced-motion:reduce){
+  .rv img,.plate.rv img,.band.rv img{transform:none; transition:none}
+  .plate.rv img{filter:grayscale(100%) contrast(112%) brightness(.62)}
+  .band.rv img{filter:grayscale(100%) contrast(115%) brightness(.42)}
 }
 
 /* ---------- Prose (privacy / terms) ---------- */

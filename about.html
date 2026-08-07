@@ -69,16 +69,29 @@
     </article>
   </section>
 
-  <!-- One image, given room, rather than three thumbnails in boxes.
-       Monochrome so it sits inside the palette instead of fighting it. -->
-  <!-- Source image is only 284px wide, so it is held at its native size
-       rather than stretched across the column, where it would go soft. -->
-  <figure class="plate plate--small reveal" style="--d:.16s">
-    <img src="assets/sisyphus.jpg" alt="A figure pushing a boulder uphill at dusk"
-         width="284" height="178" loading="lazy"
-         onerror="this.closest('.plate').remove()" />
-    <figcaption>The work is the point.</figcaption>
-  </figure>
+  <!-- 01 · Bleed. The emblem is white-on-black artwork, so it carries no
+       container; a radial mask dissolves its edge into the page. -->
+  <div class="bleed reveal" style="--d:.16s">
+    <img src="assets/logo.png" alt="" width="1024" height="1024" loading="lazy" />
+    <p>We learn more from each other than we can by ourselves.</p>
+  </div>
+
+  <!-- 03 · Band, breaking out of .wrap via negative margins to reach both
+       screen edges while staying inside the single <main>.
+       05 · .rv resolves it from blur as it scrolls into view.
+       There is only one strong photograph in the library, so it is used
+       once, at full strength, rather than repeated down the page. -->
+  <section class="band rv">
+    <img src="assets/plato-lg.jpg"
+         srcset="assets/plato-md.jpg 900w, assets/plato-lg.jpg 1400w, assets/plato-xl.jpg 1800w"
+         sizes="100vw"
+         alt="Marble statue of Plato seated, with the Academy of Athens behind"
+         loading="lazy" />
+    <div class="over">
+      <blockquote>The unexamined life is not worth living.</blockquote>
+      <div class="who">Socrates</div>
+    </div>
+  </section>
 
 </main>
 
