@@ -26,9 +26,12 @@ body{
 body::before{
   content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
   background:radial-gradient(78vmax 46vmax at 50% -8%, oklch(84% 0.02 250 / .055), transparent 66%);
-  animation:wash 26s ease-in-out infinite alternate;
+  /* Very long and nearly linear. A wide opacity swing on an ease-in-out
+     curve accelerates through the middle, which the eye reads as a pulse;
+     a narrow swing at a near-constant rate reads as light barely shifting. */
+  animation:wash 96s cubic-bezier(.45,0,.55,1) infinite alternate;
 }
-@keyframes wash{0%{opacity:.7}100%{opacity:1}}
+@keyframes wash{0%{opacity:.88}100%{opacity:1}}
 body::after{
   content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.1;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E");
