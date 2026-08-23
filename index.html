@@ -21,9 +21,12 @@
        the mark's OWN contours (derived by eroding the silhouette), so the
        horn and legs dissolve instead of being clipped by a circle. A radial
        CSS mask cut those extremities off mid-shape; this follows the artwork.
-       Baking it also sidesteps Safari ignoring mask-image on <img>. */
+       Baking it also sidesteps Safari ignoring mask-image on <img>.
+       The band is baked at a fixed pixel width in the 512px source, so it
+       softens as the mark scales; the erosion count is tuned against the
+       display size above (9 steps at ~200px). Resize one, revisit the other. */
     .emblem{
-      width:clamp(104px,13vw,132px); height:auto; display:block;
+      width:clamp(156px,19vw,200px); height:auto; display:block;
       margin:0 auto clamp(44px,8vh,72px); opacity:.82;
     }
     .quote-wrap{max-width:43ch; margin:0 auto; text-align:center}
