@@ -100,6 +100,15 @@ main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
   grid-template-columns:minmax(0,1fr) 44px; align-items:center;
   column-gap:clamp(16px,3vw,34px);
 }
+/* Safari collapses a 1fr grid item to its min-content width when the item is
+   a nested block, which squeezed this copy to one word per line. An explicit
+   min-width:0 plus a floor on the column keeps the text measure intact. */
+.row--proj > .rbody{min-width:0; width:100%}
+@media (min-width:701px){
+  /* Capped so the mark trails the copy instead of drifting to the far edge
+     across a gulf of empty ground. */
+  .row--proj{grid-template-columns:minmax(24ch,1fr) 44px; max-width:78ch}
+}
 .row--proj p .go{
   border:0; text-transform:none; letter-spacing:.02em; font-size:12.5px;
   color:var(--muted); white-space:nowrap; margin-left:6px;
@@ -111,10 +120,10 @@ main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
   width:44px; height:44px; border-radius:10px; overflow:hidden;
   display:grid; place-items:center;
 }
-/* These are opaque app icons with their own artwork backgrounds, so they
-   cannot dissolve the way the white-on-black emblem does. A hairline inset
-   ring reads as a deliberate edge rather than a leftover container. */
-.mark{box-shadow:inset 0 0 0 1px oklch(100% 0 0 / .07)}
+/* Transparent marks (ProtoQuiz, TMTL) sit directly on the page with no ring.
+   Only .mark--tile carries one, for artwork whose own background is opaque
+   by design, like SleepMedic's navy night scene. */
+.mark--tile{box-shadow:inset 0 0 0 1px oklch(100% 0 0 / .07)}
 .mark img{
   width:100%; height:100%; object-fit:contain; display:block;
   transition:transform .7s cubic-bezier(.16,1,.3,1);
@@ -233,6 +242,19 @@ html,body{overflow-x:hidden}
   margin:34px 0 12px; font:500 11px/1 var(--sans);
   letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
 }
+/* Lists in prose match paragraph colour and rhythm; the marker is a hairline
+   dash rather than a bullet, to sit with the rules used elsewhere. */
+.prose ul{margin:0 0 18px; padding:0; list-style:none}
+.prose li{
+  position:relative; padding-left:20px; margin:0 0 10px;
+  color:var(--muted); line-height:1.78;
+}
+.prose li::before{
+  content:""; position:absolute; left:0; top:.82em;
+  width:9px; height:1px; background:var(--line-2);
+}
+.prose li:last-child{margin-bottom:0}
+.prose b{color:var(--fg); font-weight:500}
 
 /* ---------- Form (contact) ---------- */
 .form{max-width:34rem; margin-top:clamp(34px,5vh,52px); display:grid; gap:18px}
