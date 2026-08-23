@@ -24,7 +24,11 @@
        Baking it also sidesteps Safari ignoring mask-image on <img>.
        The band is baked at a fixed pixel width in the 512px source, so it
        softens as the mark scales; the erosion count is tuned against the
-       display size above (5 steps at 236px). Resize one, revisit the other. */
+       display size above (5 steps at 236px). Resize one, revisit the other.
+       Cache-bust with ?v=<hash> on redeploy: a brand-new asset FILENAME can
+       404 on Pages for a while after the build reports success, which briefly
+       broke the live page; the stable name plus a query string avoids both
+       that and the stale-bytes problem. */
     .emblem{
       width:236px; height:auto; display:block;
       margin:0 auto clamp(40px,6.5vh,60px); opacity:.82;
@@ -71,7 +75,7 @@
   </header>
 
   <main class="reading wrap">
-    <img class="emblem" src="assets/logo-mark-feathered-cb17c1f8.png" alt="" width="512" height="507" />
+    <img class="emblem" src="assets/logo-mark-feathered-512.png?v=cb17c1f8" alt="" width="512" height="507" />
     <div class="quote-wrap" aria-live="polite">
       <blockquote id="qtext"></blockquote>
       <div class="attr" id="qattr">Socrates</div>
