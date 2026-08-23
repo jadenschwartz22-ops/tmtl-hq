@@ -17,10 +17,14 @@
     /* Homepage only: the quote is centered and is the whole page.
        Inner pages are left-aligned; that difference is intentional. */
     main.reading{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,7vh,80px) 0}
-    /* True transparent PNG, so no mask is needed. Safari ignores mask-image
-       on <img>, which is why the previous version showed a black square. */
+    /* The edge fade is baked into the PNG's alpha: opacity falls off along
+       the mark's OWN contours (derived by eroding the silhouette), so the
+       horn and legs dissolve instead of being clipped by a circle. A radial
+       CSS mask cut those extremities off mid-shape; this follows the artwork.
+       Baking it also sidesteps Safari ignoring mask-image on <img>. */
     .emblem{
-      width:76px; height:auto; display:block; margin:0 auto clamp(44px,8vh,72px); opacity:.42;
+      width:clamp(104px,13vw,132px); height:auto; display:block;
+      margin:0 auto clamp(44px,8vh,72px); opacity:.82;
     }
     .quote-wrap{max-width:43ch; margin:0 auto; text-align:center}
     blockquote{
@@ -61,7 +65,7 @@
   </header>
 
   <main class="reading wrap">
-    <img class="emblem" src="assets/logo-mark-128.png" alt="" width="128" height="127" />
+    <img class="emblem" src="assets/logo-mark-feathered-512.png" alt="" width="512" height="507" />
     <div class="quote-wrap" aria-live="polite">
       <blockquote id="qtext"></blockquote>
       <div class="attr" id="qattr">Socrates</div>
