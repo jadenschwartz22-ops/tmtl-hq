@@ -16,7 +16,18 @@
   <style>
     /* Homepage only: the quote is centered and is the whole page.
        Inner pages are left-aligned; that difference is intentional. */
-    main.reading{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,7vh,80px) 0}
+    /* Homepage only: lock to exactly one screen. The shared body rule in
+       pages.css sets min-height:100svh for the inner pages, which are meant to
+       scroll; here the quote is the whole page, so it should never scroll. */
+    body{height:100svh; min-height:0; overflow:hidden}
+    /* The page is exactly one screen: body is 100svh, header and footer take
+       their natural height, and main absorbs whatever is left. min-height:0 is
+       what lets a flex child shrink below its content -- without it main only
+       ever grows and pushes the footer past the fold. */
+    main.reading{
+      flex:1 1 auto; min-height:0; display:flex; flex-direction:column;
+      justify-content:center; padding:clamp(16px,3.5vh,44px) 0;
+    }
     /* The silhouette is fully opaque and hard-edged; what softens is a
        DIRECTIONAL trail baked into the alpha -- ~34 copies stepped down-left,
        quadratically decaying, normalised, lightly blurred, then kept only
@@ -35,7 +46,7 @@
        caches assets for 4h, which served stale bytes through several pushes
        here. Creds in ~/.protoquiz/.env (Global API Key headers, not Bearer). */
     .emblem{
-      width:236px; margin:0 auto clamp(40px,6.5vh,60px);
+      width:clamp(150px,23vh,236px); margin:0 auto clamp(22px,4.5vh,52px);
       position:relative; line-height:0;
     }
     .emblem-still,.emblem-live{width:100%; height:auto; display:block}
@@ -70,7 +81,7 @@
        inside the reserved space so its first line stays put too. */
     .quote-wrap{
       max-width:var(--qw,43ch); margin:0 auto; text-align:center;
-      min-height:var(--qh,21rem); display:flex; flex-direction:column;
+      min-height:var(--qh,clamp(11rem,27vh,21rem)); display:flex; flex-direction:column;
       justify-content:flex-start;
     }
     /* --qs is set per quote from its character count (see sizeFor), so the
@@ -222,8 +233,11 @@
     }
     // Longer passages get more time on screen, capped so it never drags.
     function durationFor(q){
-      const extra = Math.max(0, (plainLen(q.text) - 140) / 26);
-      return Math.min(10.5 + extra, 26);
+      // Longer hold: short quotes get more time to land, long ones more time to
+      // actually finish. The cap matters most for the 664-char Huxley, which
+      // was hitting the old 26s ceiling and cutting off mid-passage.
+      const extra = Math.max(0, (plainLen(q.text) - 140) / 20);
+      return Math.min(14 + extra, 36);
     }
 
     const pool = shuffle(dedupe(poolRaw));
