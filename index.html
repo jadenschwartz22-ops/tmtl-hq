@@ -35,14 +35,16 @@
        caches assets for 4h, which served stale bytes through several pushes
        here. Creds in ~/.protoquiz/.env (Global API Key headers, not Bearer). */
     .emblem{
-      width:236px; height:auto; display:block;
-      margin:0 auto clamp(40px,6.5vh,60px); opacity:1;
-      transform-origin:50% 62%;   /* near the hooves, so it sways rather than spins */
-      animation:sway 19s ease-in-out infinite,
-                bob  13s ease-in-out infinite,
-                breathe 23s ease-in-out infinite;
-      will-change:transform;
+      width:236px; margin:0 auto clamp(40px,6.5vh,60px);
+      position:relative; line-height:0;
     }
+    .emblem-still,.emblem-live{width:100%; height:auto; display:block}
+    /* The canvas replaces the still once it has painted a frame; until then the
+       <img> holds the space, so the mark is never missing and the layout never
+       jumps. No JS (or reduced motion) leaves the still in place. */
+    .emblem-live{display:none}
+    .emblem.is-live .emblem-still{visibility:hidden}
+    .emblem.is-live .emblem-live{display:block; position:absolute; inset:0}
     /* Three cycles on co-prime-ish periods (19/13/23s) so the combined motion
        never visibly repeats -- that irregularity is what reads as a living
        thing rather than a looping asset. All of it is transform-only, so the
@@ -94,7 +96,8 @@
     .attr em{font-style:normal; color:var(--faint)}
     .attr::before{content:""; display:block; width:26px; height:1px; margin:0 auto 16px; background:var(--line)}
     @media (prefers-reduced-motion:reduce){
-      .emblem{animation:none}
+      .emblem.is-live .emblem-live{display:none}
+      .emblem.is-live .emblem-still{visibility:visible}
       .w{opacity:1!important; transition:none!important}
       .attr{opacity:1!important}
     }
@@ -113,7 +116,10 @@
   </header>
 
   <main class="reading wrap">
-    <img class="emblem" src="assets/logo-mark-feathered-512.png?v=27a1af53" alt="" width="512" height="507" />
+    <div class="emblem">
+      <img class="emblem-still" src="assets/logo-mark-512.png" alt="" width="512" height="507" />
+      <canvas class="emblem-live" width="512" height="507" aria-hidden="true"></canvas>
+    </div>
     <div class="quote-wrap" aria-live="polite">
       <blockquote id="qtext"></blockquote>
       <div class="attr" id="qattr">Socrates</div>
@@ -282,6 +288,62 @@
     }
 
     applySize(plainLen(first.text));   // size before first paint, no jump
+
+    /* Emblem ripple ("deep swell"): a long, slow wave travelling left to right.
+       Each column of the mark is redrawn at its own vertical offset, so the
+       interior ripples like cloth while the shape stays one connected piece.
+       Displacement is vertical only and the destination x is never shifted --
+       shifting it pulls neighbouring 1px slices apart and tears dark seams
+       through the artwork, which is a visible bug, not a look.
+       Canvas is the same intrinsic size as the source art and is laid over the
+       still, so this cannot affect layout however the quote below changes. */
+    (function(){
+      const wrap = document.querySelector('.emblem');
+      if (!wrap) return;
+      const still = wrap.querySelector('.emblem-still');
+      const cv    = wrap.querySelector('.emblem-live');
+      if (!cv || !cv.getContext) return;
+      if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+      const ctx = cv.getContext('2d');
+      const W = cv.width, H = cv.height;
+      const off = document.createElement('canvas');
+      off.width = W; off.height = H;
+
+      function start(){
+        off.getContext('2d').drawImage(still, 0, 0, W, H);
+        let t0 = null, running = true, raf = 0, painted = false;
+
+        function frame(ts){
+          if (!running) return;
+          if (t0 === null) t0 = ts;
+          const t = (ts - t0) / 1000;
+          ctx.clearRect(0, 0, W, H);
+          for (let x = 0; x < W; x++){
+            const dy = Math.sin((x / W) * 2.5 - t * 0.42) * 12.0;
+            ctx.drawImage(off, x, 0, 1, H, x, dy, 1, H);
+          }
+          /* Only hand over from the still once a frame really exists, so a
+             failure to paint can never leave an empty space where the mark is. */
+          if (!painted){ painted = true; wrap.classList.add('is-live'); }
+          raf = requestAnimationFrame(frame);
+        }
+        function play(){ if (!running){ running = true; t0 = null; raf = requestAnimationFrame(frame); } }
+        function stop(){ running = false; cancelAnimationFrame(raf); }
+
+        raf = requestAnimationFrame(frame);
+        document.addEventListener('visibilitychange',
+          () => document.hidden ? stop() : play());
+        if ('IntersectionObserver' in window){
+          new IntersectionObserver(es => es[0].isIntersecting ? play() : stop(),
+            {threshold:0}).observe(wrap);
+        }
+      }
+
+      if (still.complete && still.naturalWidth) start();
+      else still.addEventListener('load', start, {once:true});
+    })();
+
     build(first.text);
     setQuote(0);
   </script>
