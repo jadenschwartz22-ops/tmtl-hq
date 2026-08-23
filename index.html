@@ -17,23 +17,26 @@
     /* Homepage only: the quote is centered and is the whole page.
        Inner pages are left-aligned; that difference is intentional. */
     main.reading{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,7vh,80px) 0}
-    /* The mark is fully opaque with a soft halo added OUTSIDE the silhouette
-       (blur the alpha, keep only what falls beyond the shape, composite it
-       under the original). The edges fade into the ground without costing the
-       artwork any weight.
-       An earlier pass eroded INWARD from the contour instead, which fades a
-       fixed band in from every edge -- so thin features (sun rays, horn tip,
-       legs) sit entirely inside that band and never reach full opacity. That
-       is what read as blurry: the mark was weakest exactly where it had to be
-       crisp. Do not reintroduce it.
+    /* The silhouette is fully opaque and hard-edged; what softens is a
+       DIRECTIONAL trail baked into the alpha -- ~34 copies stepped down-left,
+       quadratically decaying, normalised, lightly blurred, then kept only
+       where it falls outside the shape.
+       Direction is the whole point. A halo that hugs every contour equally is
+       what JPEG ringing looks like, so the eye reads it as a low-quality
+       image no matter how carefully it is tuned; the same softness given one
+       consistent axis reads as motion, and therefore as intent.
+       An even earlier pass eroded INWARD from the contour, which fades a
+       fixed band in from every edge -- thin features (sun rays, horn tip,
+       legs) sit entirely inside that band and never reach full opacity, so
+       the mark went weakest exactly where it had to be crisp. Neither the
+       inward erosion nor the symmetric halo should come back.
        Baked into the PNG because Safari ignores mask-image on <img>.
-       Cache-bust with ?v=<hash> on redeploy: a brand-new asset FILENAME can
-       404 on Pages for a while after the build reports success, which briefly
-       broke the live page; the stable name plus a query string avoids both
-       that and the stale-bytes problem. */
+       Cache-bust with ?v=<hash> AND purge Cloudflare on redeploy: the zone
+       caches assets for 4h, which served stale bytes through several pushes
+       here. Creds in ~/.protoquiz/.env (Global API Key headers, not Bearer). */
     .emblem{
       width:236px; height:auto; display:block;
-      margin:0 auto clamp(40px,6.5vh,60px); opacity:.95;
+      margin:0 auto clamp(40px,6.5vh,60px); opacity:1;
     }
     .quote-wrap{max-width:var(--qw,43ch); margin:0 auto; text-align:center}
     /* --qs is set per quote from its character count (see sizeFor), so the
@@ -77,7 +80,7 @@
   </header>
 
   <main class="reading wrap">
-    <img class="emblem" src="assets/logo-mark-feathered-512.png?v=a86fb1f2" alt="" width="512" height="507" />
+    <img class="emblem" src="assets/logo-mark-feathered-512.png?v=27a1af53" alt="" width="512" height="507" />
     <div class="quote-wrap" aria-live="polite">
       <blockquote id="qtext"></blockquote>
       <div class="attr" id="qattr">Socrates</div>
