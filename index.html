@@ -17,21 +17,23 @@
     /* Homepage only: the quote is centered and is the whole page.
        Inner pages are left-aligned; that difference is intentional. */
     main.reading{flex:1; display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,7vh,80px) 0}
-    /* The edge fade is baked into the PNG's alpha: opacity falls off along
-       the mark's OWN contours (derived by eroding the silhouette), so the
-       horn and legs dissolve instead of being clipped by a circle. A radial
-       CSS mask cut those extremities off mid-shape; this follows the artwork.
-       Baking it also sidesteps Safari ignoring mask-image on <img>.
-       The band is baked at a fixed pixel width in the 512px source, so it
-       softens as the mark scales; the erosion count is tuned against the
-       display size above (5 steps at 236px). Resize one, revisit the other.
+    /* The mark is fully opaque with a soft halo added OUTSIDE the silhouette
+       (blur the alpha, keep only what falls beyond the shape, composite it
+       under the original). The edges fade into the ground without costing the
+       artwork any weight.
+       An earlier pass eroded INWARD from the contour instead, which fades a
+       fixed band in from every edge -- so thin features (sun rays, horn tip,
+       legs) sit entirely inside that band and never reach full opacity. That
+       is what read as blurry: the mark was weakest exactly where it had to be
+       crisp. Do not reintroduce it.
+       Baked into the PNG because Safari ignores mask-image on <img>.
        Cache-bust with ?v=<hash> on redeploy: a brand-new asset FILENAME can
        404 on Pages for a while after the build reports success, which briefly
        broke the live page; the stable name plus a query string avoids both
        that and the stale-bytes problem. */
     .emblem{
       width:236px; height:auto; display:block;
-      margin:0 auto clamp(40px,6.5vh,60px); opacity:.82;
+      margin:0 auto clamp(40px,6.5vh,60px); opacity:.95;
     }
     .quote-wrap{max-width:var(--qw,43ch); margin:0 auto; text-align:center}
     /* --qs is set per quote from its character count (see sizeFor), so the
@@ -75,7 +77,7 @@
   </header>
 
   <main class="reading wrap">
-    <img class="emblem" src="assets/logo-mark-feathered-512.png?v=cb17c1f8" alt="" width="512" height="507" />
+    <img class="emblem" src="assets/logo-mark-feathered-512.png?v=a86fb1f2" alt="" width="512" height="507" />
     <div class="quote-wrap" aria-live="polite">
       <blockquote id="qtext"></blockquote>
       <div class="attr" id="qattr">Socrates</div>
