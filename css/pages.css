@@ -60,6 +60,15 @@ main{flex:1; padding:clamp(30px,7vh,72px) 0 clamp(50px,9vh,110px)}
   margin:0 0 20px; font:500 10px/1 var(--sans);
   letter-spacing:.24em; text-transform:uppercase; color:var(--faint);
 }
+/* Dateline rides with the eyebrow, separated by a rule rather than a bullet
+   so it reads as a stamp and not a second nav item. */
+.est{
+  margin-left:12px; padding-left:12px; border-left:1px solid var(--line);
+  font-variant-numeric:tabular-nums;
+}
+@media (max-width:420px){
+  .est{display:block; margin:8px 0 0; padding:0; border-left:0}
+}
 /* The statement is serif and large: it carries the page the way the quote
    carries the homepage. Never a bare noun like "About TMTL". */
 .statement{
